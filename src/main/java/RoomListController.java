@@ -1,8 +1,5 @@
-import BookingRoom.BookingRoom;
 import Utils.DBUtils;
 import Utils.ValidationMessage;
-import layout.ButtonColumn;
-import layout.ColorRenderer;
 import model.Room;
 import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -12,7 +9,6 @@ import org.jdatepicker.impl.UtilDateModel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,7 +17,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class BookingRoomController extends JFrame implements ValidationMessage, ActionListener {
+public class RoomListController extends JFrame implements ValidationMessage, ActionListener {
 
     private JPanel mainPanel = new JPanel();
     JPanel rightPanel = new JPanel();
@@ -31,7 +27,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     JTextField tfEnd2 = new JTextField(10);
     private JButton btnSearch;
     private JTextArea lbWay;
-    private ArrayList<Room> rooms = DBUtils.getRooms();
 
     public void MapLayout(String title) {
         setTitle(title);
@@ -49,7 +44,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     private JPanel drawLeftLayout() {
 
         JPanel panel = new JPanel(new BorderLayout());
-        JPanel panelTop = new JPanel(new GridLayout(8, 1, 5, 5));
+        JPanel panelTop = new JPanel(new GridLayout(6, 1, 5, 5));
         JPanel panelBottom = new JPanel(new BorderLayout());
         JScrollPane scroll = new JScrollPane(lbWay = new JTextArea());
         scroll.setPreferredSize(panelTop.getPreferredSize());
@@ -58,19 +53,12 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         panel.add(panelTop, BorderLayout.PAGE_START);
         panel.add(panelBottom, BorderLayout.CENTER);
 
-        makeJTextFieldGoFrom(panelTop, "Name", tfBegin);
-        makeJTextFieldGoFrom(panelTop, "Phone", tfEnd);
-
-        String[] dayChoices = {"1 day", "2 days", "3 days", "4 days",
-                "5 days", "6 days"};
-        makeDaysNumber(panelTop, "How many days?", dayChoices);
-
-        String[] numberChoices = {"1", "2", "3", "4",
-                "5", "6"};
-        makeDaysNumber(panelTop, "How many people?", numberChoices);
+        makeJTextFieldGoFrom(panelTop, "Điểm đi", tfBegin);
+        makeJTextFieldGoFrom(panelTop, "Điểm đến", tfEnd);
 
         makeCalendarForm(panelTop);
         makeCalendarFormToDate(panelTop);
+
         makeSearchButton(panelTop);
 
         panel.setBorder(new EmptyBorder(0, 5, 0, 0));
@@ -91,55 +79,18 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         lblNewLabel.setBounds(423, 13, 273, 93);
         rightPanel.add(lblNewLabel);
 
-
-        String col[] = {"Pos", "Team", "P", "W", "K"};
+        ArrayList<Room> rooms = DBUtils.getRooms();
+        String col[] = {"Pos", "Team", "P", "W", "L"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
         for (Room room : rooms) {
-            Object[] data2 = {room.getRoomNumber(), room.getRoomType(), room.getCustomerName(), room.getEmail(), "Book"};
+            Object[] data2 = {room.getCustomerName(), room.getRoomType(), room.getEmail(), room.getEmail(), room.getPhone()};
             tableModel.addRow(data2);
+
         }
 
         JTable table = new JTable(tableModel);
-        table.setDefaultRenderer(Color.class, new ColorRenderer(true));
-        Action delete = new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-                JTable table = (JTable) e.getSource();
-                int modelRow = Integer.valueOf(e.getActionCommand());
-                Room room = rooms.get(modelRow);
-                roomDetailDialog(room);
-//                ((DefaultTableModel)table.getModel()).removeRow(modelRow);
-            }
-        };
-
-        ButtonColumn buttonColumn = new ButtonColumn(table, delete, 4);
-        buttonColumn.setMnemonic(KeyEvent.VK_D);
-
-        table.setDefaultRenderer(Double.class, new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setForeground(((Double) value) > 0 ? Color.BLUE : Color.RED);
-                return c;
-            }
-        });
-
         rightPanel.add(table);
         return rightPanel;
-    }
-
-    public JScrollPane Login() {
-        JFrame f;
-        f = new JFrame();
-        String data[][] = {{"101", "Amit", "670000"},
-                {"102", "Jai", "780000"},
-                {"101", "Sachin", "700000"}};
-        String column[] = {"EMAIL", "NAME", "SALARY", "SALARY", "SALARY"};
-        JTable jt = new JTable(data, column);
-        jt.setBounds(30, 40, 200, 300);
-        JScrollPane sp = new JScrollPane(jt);
-        f.add(sp);
-        f.setSize(300, 400);
-        return sp;
     }
 
     private JMenuBar drawMenu() {
@@ -162,22 +113,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         mi.setAccelerator(KeyStroke.getKeyStroke(keyEvent, event));
         mi.addActionListener(this);
         return mi;
-    }
-
-    private void makeDaysNumber(JPanel panelTop, String title, String[] choices) {
-
-        JPanel panelSmall = new JPanel(new GridLayout(1, 2, 15, 5));
-        panelSmall.setPreferredSize(new Dimension(200, 30));
-        panelSmall.setBorder(new EmptyBorder(0, 15, 0, 5));
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(new TitledBorder(title));
-        panel.add(panelSmall);
-        final JComboBox<String> cb = new JComboBox<String>(choices);
-        cb.setMaximumSize(cb.getPreferredSize()); // added code
-        cb.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
-        //cb.setVisible(true); // Not needed
-        panel.add(cb);
-        panelTop.add(panel);
     }
 
     private void makeJTextFieldGoFrom(JPanel panelTop, String title, JTextField tf) {
@@ -228,9 +163,9 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     private void makeSearchButton(JPanel panel) {
         JPanel panelRunTemp = new JPanel(new GridLayout(1, 2, 15, 5));
         panelRunTemp.setBorder(new EmptyBorder(0, 15, 0, 5));
-        panelRunTemp.add(btnSearch = CustomButton("Searh"));
+        panelRunTemp.add(btnSearch = CustomButton("Tìm"));
         JPanel panelRun = new JPanel(new BorderLayout());
-        panelRun.setBorder(new TitledBorder("Find Rooms"));
+        panelRun.setBorder(new TitledBorder("Tìm đường"));
         panelRun.add(panelRunTemp);
         panel.add(panelRun);
     }
@@ -251,45 +186,9 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
     }
 
-    private void roomDetailDialog(Room room) {
-        JFrame f = new JFrame();
-        JDialog d = new JDialog(f, "Dialog Example", true);
-        d.setLayout(new FlowLayout());
-        JButton b = new JButton("OK");
-//
-        b.addActionListener(e -> {
-            d.setVisible(false);
-            BookingRoom bookingRoom = new BookingRoom(room);
-            bookingRoom.bookRoom();
-        });
-        d.add(new JLabel(room.getRoomNumber()), BorderLayout.SOUTH);
-        d.add(new JLabel(room.getCustomerName()), BorderLayout.SOUTH);
-        d.add(new JLabel(room.getPhone()), BorderLayout.SOUTH);
-        d.add(b);
-        d.setSize(300, 300);
-        d.setBounds(300, 200, 200, 200);
-        d.setVisible(true);
-
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
 
-//        rooms.remove(0);
-////        remove(rightPanel);
-//        rightPanel.removeAll();
-//        drawRightLayout();
-//        rightPanel.revalidate();
-//        rightPanel.repaint();
-//
-//        BookingRoom bookingRoom = new BookingRoom(rooms.get(0));
-//        bookingRoom.setErrorMessage(this);
-//        bookingRoom.tryToBookRoom();
-
     }
-
-
 }
-
-

@@ -9,4 +9,9 @@ public class CheapIRoom implements IRoom {
         System.out.format("book CheapIRoom \n");
         DBUtils.insertIntoDb(room);
     }
+
+    @Override
+    public void insertRoom(Room room) {
+
+    }
 }

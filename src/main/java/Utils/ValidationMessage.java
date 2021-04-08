@@ -1,6 +1,6 @@
 package Utils;
 
-public interface ErrorMessage {
+public interface ValidationMessage {
     void errorMessage(String errorMessage);
     void successMessage(String successMessage);
 }

@@ -1,47 +1,45 @@
 package template;
 
-import Utils.ErrorMessage;
+import Utils.ValidationMessage;
 import model.Room;
-
-import javax.swing.*;
 
 public abstract class RoomTemplate {
 
-    public abstract Boolean validEmail(String email);
+    public abstract Boolean validEmail();
 
-    public abstract Boolean validPhone(String phone);
+    public abstract Boolean validPhone();
 
-    public abstract Boolean checkExistRoom(String roomName);
+    public abstract Boolean checkExistRoom();
 
-    public abstract void bookRoom(Room room);
+    public abstract void bookRoom();
 
-    public ErrorMessage errorMessage = null;
+    public ValidationMessage errorMessage = null;
 
-    public final void tryToBookRoom(Room room) {
+    public final void tryToBookRoom() {
 
-        if(!validEmail(room.getEmail())) {
+        if(!validEmail()) {
             System.out.format("Invalid Email \n");
             errorMessage.errorMessage("Invalid Email");
             return;
         }
 
-        if(!validPhone(room.getPhone())) {
+        if(!validPhone()) {
             System.out.format("Invalid Phone \n");
             errorMessage.errorMessage("Invalid Phone");
             return;
         }
 
-        if(checkExistRoom(room.getRoomName())) {
+        if(checkExistRoom()) {
             errorMessage.errorMessage("Room Exist");
             System.out.format("Room Exist \n");
             return;
         }
 
-        bookRoom(room);
+        bookRoom();
         errorMessage.successMessage("");
     }
 
-    public void setErrorMessage(ErrorMessage errorMessage) {
+    public void setErrorMessage(ValidationMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

@@ -7,7 +7,16 @@ public class Room {
     private String email;
     private String phone;
     private String roomName;
+    private String roomNumber;
     private RoomType roomType;
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
 
     public String getCustomerName() {
         return customerName;

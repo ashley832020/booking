@@ -1,10 +1,10 @@
-import Utils.ErrorMessage;
+import Utils.ValidationMessage;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class BookingCarController extends JFrame implements ErrorMessage, ActionListener {
+public class BookingCarController extends JFrame implements ValidationMessage, ActionListener {
 
 
 

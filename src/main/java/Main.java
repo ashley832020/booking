@@ -1,17 +1,14 @@
-import BookingRoom.BookingRoom;
 import Utils.DBUtils;
-import Utils.ErrorMessage;
-import model.Room;
-import BookingRoom.RoomType;
+import Utils.ValidationMessage;
+import model.User;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Main extends JFrame implements ErrorMessage {
+public class Main extends JFrame implements ValidationMessage {
 
     private static final long serialVersionUID = 1L;
     private JTextField textField;
@@ -27,8 +24,14 @@ public class Main extends JFrame implements ErrorMessage {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    Main frame = new Main();
-                    frame.setVisible(true);
+                    User user = DBUtils.getUerById(1);
+                    if (user != null && user.getIsLogin() == 1) {
+                        BookingRoomController bookingRoomController = new BookingRoomController();
+                        bookingRoomController.MapLayout("Bong Hotel");
+                    } else {
+                        Main frame = new Main();
+                        frame.setVisible(true);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -91,6 +94,7 @@ public class Main extends JFrame implements ErrorMessage {
                 Boolean isLogin = DBUtils.login(userName, password);
                 if (isLogin) {
                     successMessage("");
+                    DBUtils.updateUserLogin();
                 } else {
                     errorMessage("Wrong");
                 }
@@ -102,35 +106,8 @@ public class Main extends JFrame implements ErrorMessage {
         label = new JLabel("");
         label.setBounds(0, 0, 1008, 562);
         contentPane.add(label);
-    }
 
-    private void makeJTextFieldGoFrom(JPanel panelTop, String title, JTextField tf) {
-        JPanel panelSmall = new JPanel(new GridLayout(1, 2, 15, 5));
-        panelSmall.setPreferredSize(new Dimension(200, 30));
-        panelSmall.setBorder(new EmptyBorder(0, 15, 0, 5));
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(new TitledBorder(title));
-        panel.add(panelSmall);
-        panel.add(tf);
-        panelTop.add(panel);
-    }
 
-    public void Login() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("<html>");
-        sb.append("<body><ol>");
-        Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                .getAllFonts();
-        for (Font font : fonts) {
-            String name = font.getName();
-            sb.append("<li style='font-family: " + name + "; font-size: 20px;'>");
-            sb.append(name);
-        }
-
-        JScrollPane sp = new JScrollPane(new JLabel(sb.toString()));
-        Dimension d = sp.getPreferredSize();
-        sp.setPreferredSize(new Dimension(d.width, 150));
-        JOptionPane.showMessageDialog(null, sp);
     }
 
     @Override
@@ -140,6 +117,10 @@ public class Main extends JFrame implements ErrorMessage {
 
     @Override
     public void successMessage(String successMessage) {
+        goToMainScreen();
+    }
+
+    private void goToMainScreen() {
         dispose();
         BookingRoomController bookingRoomController = new BookingRoomController();
         bookingRoomController.MapLayout("Ahihi");

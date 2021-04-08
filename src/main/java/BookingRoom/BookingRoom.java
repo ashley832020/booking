@@ -10,26 +10,33 @@ import template.RoomTemplate;
 
 public class BookingRoom extends RoomTemplate {
 
+    private Room room = null;
+
+    public BookingRoom(Room room) {
+        this.room = room;
+    }
+
     @Override
-    public Boolean validEmail(String email) {
+    public Boolean validEmail() {
         ValidationStrategy validationStrategy = new EmailValidate();
-        return validationStrategy.validate(email);
+        return validationStrategy.validate(room.getEmail());
     }
 
     @Override
-    public Boolean validPhone(String phone) {
+    public Boolean validPhone() {
         ValidationStrategy validationStrategy = new PhoneValidate();
-        return validationStrategy.validate(phone);
+        return validationStrategy.validate(room.getPhone());
     }
 
     @Override
-    public Boolean checkExistRoom(String roomName) {
-        return DBUtils.isExistRoomOrNot(roomName);
+    public Boolean checkExistRoom() {
+        return DBUtils.isExistRoomOrNot(room.getRoomName());
     }
 
     @Override
-    public void bookRoom(Room room) {
+    public void bookRoom() {
         RoomFactory roomFactory = new RoomFactory();
-        roomFactory.tryToBookRoom(room.getRoomType());
+        IRoom iRoom = roomFactory.tryToBookRoom(RoomType.EXPENSIVE);
+        iRoom.insertRoom(room);
     }
 }

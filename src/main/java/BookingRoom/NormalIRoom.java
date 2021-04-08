@@ -9,4 +9,9 @@ public class NormalIRoom implements IRoom {
         System.out.format("book NormalIRoom \n");
         DBUtils.insertIntoDb(room);
     }
+
+    @Override
+    public void insertRoom(Room room) {
+        DBUtils.insertIntoDb(room);
+    }
 }

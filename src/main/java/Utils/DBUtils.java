@@ -2,6 +2,7 @@ package Utils;
 
 import BookingRoom.RoomType;
 import model.Room;
+import model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 public class DBUtils {
     private static Connection connection = null;
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/room";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/swing_demo";
     static final String DB_USER = "root";
     static final String DB_PASS = "root";
 
@@ -74,6 +75,7 @@ public class DBUtils {
             st.setString(1, userName);
             st.setString(2, password);
             ResultSet rs = st.executeQuery();
+
             return rs.next();
 
         } catch (Exception e) {
@@ -83,13 +85,47 @@ public class DBUtils {
         return false;
     }
 
+    public static void updateUserLogin() {
+        try {
+            connection = DBUtils.getConnection();
+            PreparedStatement st = (PreparedStatement) connection
+                    .prepareStatement("UPDATE Account " +
+                            "SET isLogin = 1 WHERE id = 1");
+            st.executeUpdate();
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    public static User getUerById(int id) {
+        try {
+            connection = DBUtils.getConnection();
+            Statement st = connection.createStatement();
+            String query = "SELECT * FROM Account where id = " + id;
+            ResultSet rs = st.executeQuery(query);
+            User user = new User();
+            if (rs.next()) {
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                int isLogin = rs.getInt("isLogin");
+                user.setUsername(username);
+                user.setPassword(password);
+                user.setIsLogin(isLogin);
+            }
+            return user;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public static ArrayList<Room> getRooms() {
 
         ArrayList rooms = new ArrayList();
         try {
             Connection connection = DBUtils.getConnection();
             Statement st = connection.createStatement();
-            String query = "SELECT * FROM room";
+            String query = "SELECT * FROM room where available = 1";
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
 //                id, roomNumber, customerName, customerEmail, customerPhone
@@ -103,6 +139,7 @@ public class DBUtils {
                 room.setCustomerName(customerName);
                 room.setEmail(customerEmail);
                 room.setPhone(customerPhone);
+                room.setRoomNumber(roomNumber);
                 rooms.add(room);
             }
 

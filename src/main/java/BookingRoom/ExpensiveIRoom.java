@@ -9,4 +9,9 @@ public class ExpensiveIRoom implements IRoom {
         System.out.format("book ExpensiveIRoom \n");
         DBUtils.insertIntoDb(room);
     }
+
+    @Override
+    public void insertRoom(Room room) {
+
+    }
 }
