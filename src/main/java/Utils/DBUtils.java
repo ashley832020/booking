@@ -167,8 +167,8 @@ public class DBUtils {
         try {
             Connection connection = DBUtils.getConnection();
             Statement st = connection.createStatement();
-//            String query = "SELECT * FROM room where available = 1";
-            String query = "SELECT * FROM room";
+            String query = "SELECT * FROM room where available = 1";
+//            String query = "SELECT * FROM room";
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
 //                id, roomNumber, customerName, customerEmail, customerPhone

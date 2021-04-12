@@ -18,8 +18,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class BookingRoomController extends JFrame implements ValidationMessage, ActionListener {
 
@@ -31,7 +39,8 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     private JButton btnSearch;
     private JTextArea lbWay;
     private ArrayList<Room> rooms = DBUtils.getRooms();
-
+    UtilDateModel modelFrom = new UtilDateModel();
+    UtilDateModel modelTo = new UtilDateModel();
     public void MapLayout(String title) {
         setTitle(title);
         setLayout(new BorderLayout(5, 5));
@@ -193,9 +202,9 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
     private void makeCalendarForm(JPanel panelTop) {
 
-        UtilDateModel model = new UtilDateModel();
-        model.setDate(1990, 8, 24);
-        JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
+
+        modelFrom.setDate(2020, 4, 1);
+        JDatePanelImpl datePanel = new JDatePanelImpl(modelFrom, new Properties());
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
 
         JPanel panelSmall = new JPanel(new GridLayout(1, 2, 15, 5));
@@ -210,9 +219,8 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
     private void makeCalendarFormToDate(JPanel panelTop) {
 
-        UtilDateModel model = new UtilDateModel();
-        model.setDate(2020, 8, 24);
-        JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
+        modelTo.setDate(2020, 4, 30);
+        JDatePanelImpl datePanel = new JDatePanelImpl(modelTo, new Properties());
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
 
         JPanel panelSmall = new JPanel(new GridLayout(1, 2, 15, 5));
@@ -259,6 +267,18 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 //
         b.addActionListener(e -> {
             d.setVisible(false);
+
+            if(modelFrom.getValue() == null) {
+                errorMessage("Input From Date");
+                return;
+            }
+
+            if(modelTo.getValue() == null) {
+                errorMessage("Input To Date");
+                return;
+            }
+
+
             room.setCustomerName(tfCustomerName.getText());
             room.setCustomerPhone(tfCustomerPhone.getText());
             room.setCustomerEmail(tfCustomerEmail.getText());
@@ -279,9 +299,29 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-            Calculator.createWindow();
 
-//        rooms.remove(0);
+        if(modelFrom.getValue() == null) {
+            errorMessage("Input From Date");
+            return;
+        }
+
+        if(modelTo.getValue() == null) {
+            errorMessage("Input To Date");
+            return;
+        }
+
+        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
+        try {
+            Date date1 = myFormat.parse(modelFrom.getDay() + " " + modelFrom.getMonth() + " " + modelFrom.getYear());
+            Date date2 = myFormat.parse(modelTo.getDay() + " " + modelTo.getMonth() + " " + modelTo.getYear());
+            long diff = date2.getTime() - date1.getTime();
+            System.out.println ("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+        } catch (ParseException exx) {
+            exx.printStackTrace();
+        }
+
+
+        //        rooms.remove(0);
 ////        remove(rightPanel);
 //        rightPanel.removeAll();
 //        drawRightLayout();
