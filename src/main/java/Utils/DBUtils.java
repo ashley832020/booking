@@ -46,10 +46,27 @@ public class DBUtils {
         return false;
     }
 
+    public static Boolean checkRoomAvailableOrNot(String roomNumber) {
+        try {
+            Connection connection = DBUtils.getConnection();
+            Statement st = connection.createStatement();
+            String query = "SELECT available FROM room WHERE roomNumber = " + "'" + roomNumber + "'";
+            ResultSet rs = st.executeQuery(query);
+            if (rs.next()) {
+                int available = rs.getInt("available");
+                return available == 1;
+            }
+        } catch (Exception e) {
+            System.out.format("Exception \n");
+        }
+
+        return false;
+    }
+
     public static void insertIntoDb(Room room) {
         String roomName = room.getRoomName();
         String roomNumber = room.getRoomName();
-        String roomType = room.getEmail();
+        String roomType = room.getCustomerEmail();
         String customerName = room.getCustomerName();
         String subQuery = "VALUES" + "(" + "'" + roomName + "'" + "," + "'" + roomNumber +
                 "'" + "," + "'" + roomType + "'" + "," + "'" + customerName + "'" + ")";
@@ -61,6 +78,31 @@ public class DBUtils {
             Integer rs = st.executeUpdate(query);
             st.close();
             System.out.format("bookRoom Okkkkk \n");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateRoomInformation(Room room) {
+        String customerName = room.getRoomName();
+        String customerEmail = room.getCustomerName();
+        String customerPhone = room.getCustomerPhone();
+        String roomNumber = room.getRoomNumber();
+
+        try {
+
+            String sql = "UPDATE room SET customerName=?, customerEmail=?, customerPhone=? WHERE roomNumber=?";
+            PreparedStatement statement = getConnection().prepareStatement(sql);
+            statement.setString(1, customerName);
+            statement.setString(2, customerEmail);
+            statement.setString(3, customerPhone);
+            statement.setString(4, roomNumber);
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("An existing user was updated successfully!");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,7 +167,8 @@ public class DBUtils {
         try {
             Connection connection = DBUtils.getConnection();
             Statement st = connection.createStatement();
-            String query = "SELECT * FROM room where available = 1";
+//            String query = "SELECT * FROM room where available = 1";
+            String query = "SELECT * FROM room";
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
 //                id, roomNumber, customerName, customerEmail, customerPhone
@@ -134,12 +177,23 @@ public class DBUtils {
                 String customerName = rs.getString("customerName");
                 String customerEmail = rs.getString("customerEmail");
                 String customerPhone = rs.getString("customerPhone");
+                int capacity = rs.getInt("capacity");
+                int available = rs.getInt("available");
+                String price = rs.getString("price");
                 Room room = new Room();
                 room.setRoomType(RoomType.EXPENSIVE);
                 room.setCustomerName(customerName);
-                room.setEmail(customerEmail);
-                room.setPhone(customerPhone);
+                room.setCustomerEmail(customerEmail);
+                room.setCustomerPhone(customerPhone);
                 room.setRoomNumber(roomNumber);
+                room.setPrice(price);
+                room.setCapacity(capacity);
+                if (available == 1) {
+                    room.setAvailable("Busy");
+                } else {
+                    room.setAvailable("Ready");
+                }
+
                 rooms.add(room);
             }
 

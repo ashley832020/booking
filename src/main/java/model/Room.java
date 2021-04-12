@@ -4,11 +4,38 @@ import BookingRoom.RoomType;
 
 public class Room {
     private String customerName;
-    private String email;
-    private String phone;
+    private String customerEmail;
+    private String customerPhone;
     private String roomName;
     private String roomNumber;
+    private String price;
     private RoomType roomType;
+    private Integer capacity;
+    private String available;
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public String getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(String available) {
+        this.available = available;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
     public String getRoomNumber() {
         return roomNumber;
@@ -26,20 +53,20 @@ public class Room {
         this.customerName = customerName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getCustomerPhone() {
+        return customerPhone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
     }
 
     public String getRoomName() {

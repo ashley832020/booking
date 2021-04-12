@@ -23,12 +23,11 @@ import java.util.Properties;
 
 public class BookingRoomController extends JFrame implements ValidationMessage, ActionListener {
 
-    private JPanel mainPanel = new JPanel();
-    JPanel rightPanel = new JPanel();
-    JTextField tfBegin = new JTextField(10);
-    JTextField tfEnd = new JTextField(10);
-    JTextField tfEnd1 = new JTextField(10);
-    JTextField tfEnd2 = new JTextField(10);
+    private final JPanel mainPanel = new JPanel();
+    private final JPanel rightPanel = new JPanel();
+    private final JTextField tfCustomerName = new JTextField(10);
+    private final JTextField tfCustomerPhone = new JTextField(10);
+    private final JTextField tfCustomerEmail = new JTextField(10);
     private JButton btnSearch;
     private JTextArea lbWay;
     private ArrayList<Room> rooms = DBUtils.getRooms();
@@ -58,8 +57,9 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         panel.add(panelTop, BorderLayout.PAGE_START);
         panel.add(panelBottom, BorderLayout.CENTER);
 
-        makeJTextFieldGoFrom(panelTop, "Name", tfBegin);
-        makeJTextFieldGoFrom(panelTop, "Phone", tfEnd);
+        makeJTextFieldGoFrom(panelTop, "Name", tfCustomerName);
+        makeJTextFieldGoFrom(panelTop, "Phone", tfCustomerPhone);
+        makeJTextFieldGoFrom(panelTop, "Email", tfCustomerEmail);
 
         String[] dayChoices = {"1 day", "2 days", "3 days", "4 days",
                 "5 days", "6 days"};
@@ -85,17 +85,17 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         rightPanel.setLayout(new BorderLayout());
         rightPanel.add(mainPanel, BorderLayout.WEST);
 
-        JLabel lblNewLabel = new JLabel("Rooms");
-        lblNewLabel.setForeground(Color.BLACK);
-        lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 46));
-        lblNewLabel.setBounds(423, 13, 273, 93);
-        rightPanel.add(lblNewLabel);
+//        JLabel lblNewLabel = new JLabel("Rooms");
+//        lblNewLabel.setForeground(Color.BLACK);
+//        lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 46));
+//        lblNewLabel.setBounds(423, 13, 273, 93);
+//        rightPanel.add(lblNewLabel);
 
 
         String col[] = {"Pos", "Team", "P", "W", "K"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
         for (Room room : rooms) {
-            Object[] data2 = {room.getRoomNumber(), room.getRoomType(), room.getCustomerName(), room.getEmail(), "Book"};
+            Object[] data2 = { "P" + room.getRoomNumber(), room.getPrice(), room.getCapacity()+" people", room.getAvailable() + "", "Book"};
             tableModel.addRow(data2);
         }
 
@@ -259,12 +259,17 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 //
         b.addActionListener(e -> {
             d.setVisible(false);
+            room.setCustomerName(tfCustomerName.getText());
+            room.setCustomerPhone(tfCustomerPhone.getText());
+            room.setCustomerEmail(tfCustomerEmail.getText());
             BookingRoom bookingRoom = new BookingRoom(room);
-            bookingRoom.bookRoom();
+            bookingRoom.setErrorMessage(this);
+            bookingRoom.tryToBookRoom();
+            System.out.println("ahihihi");
         });
         d.add(new JLabel(room.getRoomNumber()), BorderLayout.SOUTH);
         d.add(new JLabel(room.getCustomerName()), BorderLayout.SOUTH);
-        d.add(new JLabel(room.getPhone()), BorderLayout.SOUTH);
+        d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
         d.add(b);
         d.setSize(300, 300);
         d.setBounds(300, 200, 200, 200);
@@ -274,7 +279,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+            Calculator.createWindow();
 
 //        rooms.remove(0);
 ////        remove(rightPanel);

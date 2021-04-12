@@ -83,7 +83,7 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
         String col[] = {"Pos", "Team", "P", "W", "L"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
         for (Room room : rooms) {
-            Object[] data2 = {room.getCustomerName(), room.getRoomType(), room.getEmail(), room.getEmail(), room.getPhone()};
+            Object[] data2 = {room.getCustomerName(), room.getRoomType(), room.getCustomerEmail(), room.getCustomerEmail(), room.getCustomerPhone()};
             tableModel.addRow(data2);
 
         }

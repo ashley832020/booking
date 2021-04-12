@@ -16,12 +16,7 @@ public abstract class RoomTemplate {
     public ValidationMessage errorMessage = null;
 
     public final void tryToBookRoom() {
-
-        if(!validEmail()) {
-            System.out.format("Invalid Email \n");
-            errorMessage.errorMessage("Invalid Email");
-            return;
-        }
+        System.out.format("tryToBookRoom \n");
 
         if(!validPhone()) {
             System.out.format("Invalid Phone \n");
@@ -29,14 +24,20 @@ public abstract class RoomTemplate {
             return;
         }
 
+        if(!validEmail()) {
+            System.out.format("Invalid Email \n");
+            errorMessage.errorMessage("Invalid Email");
+            return;
+        }
+
         if(checkExistRoom()) {
-            errorMessage.errorMessage("Room Exist");
+            errorMessage.errorMessage("Not Available");
             System.out.format("Room Exist \n");
             return;
         }
 
         bookRoom();
-        errorMessage.successMessage("");
+        errorMessage.successMessage("Done");
     }
 
     public void setErrorMessage(ValidationMessage errorMessage) {
