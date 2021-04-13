@@ -188,8 +188,25 @@ public class DBUtils {
                 String capacity = rs.getString("capacity");
                 String available = rs.getString("available");
                 String price = rs.getString("price");
+                String type = rs.getString("type");
+                RoomType roomType = RoomType.CHEAP;
+                switch (type) {
+                    case  "CHEAP" : {
+                        roomType = RoomType.CHEAP;
+                        break;
+                    }
+                    case  "NORMAL" : {
+                        roomType = RoomType.NORMAL;
+                        break;
+                    }
+                    case  "EXPENSIVE" : {
+                        roomType = RoomType.EXPENSIVE;
+                        break;
+                    }
+                    default: break;
+                }
                 Room room = new Room();
-                room.setRoomType(RoomType.EXPENSIVE);
+                room.setRoomType(roomType);
                 room.setCustomerName(customerName);
                 room.setCustomerEmail(customerEmail);
                 room.setCustomerPhone(customerPhone);

@@ -54,14 +54,14 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
         panel.add(panelBottom, BorderLayout.CENTER);
 
         makeJTextFieldGoFrom(panelTop, "Room Number", tfRoomName);
-        makeJTextFieldGoFrom(panelTop, "Price", tfRoomPrice);
+//        makeJTextFieldGoFrom(panelTop, "Price", tfRoomPrice);
 
         String[] capacity = {"1", "2", "3", "4"};
         makeCapacityComboBox(panelTop, "Capacity", capacity);
 
-        String[] prices = {"50 $", "100 $", "150 $", "200 $",
-                "250 $", "300 $"};
-        makePriceComboBox(panelTop, "Price", prices);
+        String[] prices = {"50", "100", "150", "200",
+                "250", "300"};
+        makePriceComboBox(panelTop, "Price ($) ", prices);
 
         makeSearchButton(panelTop);
 
@@ -77,10 +77,10 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
         rightPanel.setLayout(new BorderLayout());
         rightPanel.add(mainPanel, BorderLayout.WEST);
 
-        String col[] = {"Pos", "Team", "P", "W"};
+        String col[] = {"Pos", "Team", "P", "W", "A"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
         for (Room room : rooms) {
-            Object[] data2 = {"P" + room.getRoomNumber(), room.getPrice(), room.getCapacity() + " people", room.getAvailable() + ""};
+            Object[] data2 = {"P" + room.getRoomNumber(), room.getPrice() + " $", room.getCapacity() + " people", room.getRoomType(), room.getAvailable() + ""};
             tableModel.addRow(data2);
         }
 
@@ -92,9 +92,9 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
 
     private JMenuBar drawMenu() {
         JMenu menuFile = new JMenu("File");
-        menuFile.add(createMenuItem("Danh Sách Phòng", KeyEvent.VK_X, Event.CTRL_MASK));
-        menuFile.add(createMenuItem("Phòng Trống", KeyEvent.VK_X, Event.CTRL_MASK));
-        menuFile.add(createMenuItem("Phòng", KeyEvent.VK_X, Event.CTRL_MASK));
+//        menuFile.add(createMenuItem("Danh Sách Phòng", KeyEvent.VK_X, Event.CTRL_MASK));
+//        menuFile.add(createMenuItem("Phòng Trống", KeyEvent.VK_X, Event.CTRL_MASK));
+//        menuFile.add(createMenuItem("Phòng", KeyEvent.VK_X, Event.CTRL_MASK));
         JMenu menuHelp = new JMenu("Help");
         menuHelp.setMnemonic(KeyEvent.VK_H);
         menuHelp.add(createMenuItem("About", KeyEvent.VK_A, Event.CTRL_MASK));
@@ -188,7 +188,16 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
         if (e.getSource() == btnSearch) {
             Room room = new Room();
             room.setBook(false);
-            room.setRoomType(RoomType.CHEAP);
+
+            int price = Integer.parseInt(cbPrice.getSelectedItem().toString());
+            if (price <= 50) {
+                room.setRoomType(RoomType.CHEAP);
+            } else if (price <= 150) {
+                room.setRoomType(RoomType.NORMAL);
+            } else {
+                room.setRoomType(RoomType.EXPENSIVE);
+            }
+
             room.setRoomNumber(tfRoomName.getText());
             room.setPrice(Objects.requireNonNull(cbPrice.getSelectedItem()).toString());
             room.setCapacity(Objects.requireNonNull(cbCapacity.getSelectedItem()).toString());

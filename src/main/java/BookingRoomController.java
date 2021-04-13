@@ -100,7 +100,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         String col[] = {"Pos", "Team", "P", "W", "K"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
         for (Room room : rooms) {
-            Object[] data2 = {"P" + room.getRoomNumber(), room.getPrice(), room.getCapacity() + " people", room.getAvailable() + "", "Book"};
+            Object[] data2 = {"P" + room.getRoomNumber(), room.getPrice() + " $", room.getCapacity() + " people", room.getAvailable() + "", "Book"};
             tableModel.addRow(data2);
         }
 
