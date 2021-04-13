@@ -121,13 +121,15 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     }
 
     private JMenuBar drawMenu() {
-        JMenu menuFile = new JMenu("File");
+        JMenu menuFile = new JMenu("Menu");
         menuFile.add(createMenuItem("Danh Sách Phòng", KeyEvent.VK_X, Event.ENTER));
         menuFile.add(createMenuItem("Phòng Đã Đặt", KeyEvent.VK_X, Event.ENTER));
-        menuFile.add(createMenuItem("Làm Mới", KeyEvent.VK_X, Event.CTRL_MASK));
+
         JMenu menuHelp = new JMenu("Help");
         menuHelp.setMnemonic(KeyEvent.VK_H);
         menuHelp.add(createMenuItem("About", KeyEvent.VK_A, Event.CTRL_MASK));
+        menuHelp.add(createMenuItem("Refresh", KeyEvent.VK_X, Event.CTRL_MASK));
+        menuHelp.add(createMenuItem("Logout", KeyEvent.VK_X, Event.CTRL_MASK));
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(menuFile);
         menuBar.add(menuHelp);
@@ -227,7 +229,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         }
 
         JFrame f = new JFrame();
-        JDialog d = new JDialog(f, "Thanh Toán", true);
+        JDialog d = new JDialog(f, "Payment", true);
         d.setLayout(new FlowLayout());
         JButton card = new JButton("CARD");
         JButton cash = new JButton("CASH");
@@ -310,9 +312,19 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             bookingRoomController.MapLayout("Phòng Đã Đặt");
         }
 
-        if (actionKey.equals("Làm Mới")) {
+        if (actionKey.equals("Refresh")) {
             rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
             refreshData();
+        }
+
+        if (actionKey.equals("Logout")) {
+            DBUtils.logout();
+            java.awt.Window win[] = java.awt.Window.getWindows();
+            for(int i=0;i<win.length;i++){
+                win[i].dispose();
+            }
+            Main frame = new Main();
+            frame.setVisible(true);
         }
     }
 }

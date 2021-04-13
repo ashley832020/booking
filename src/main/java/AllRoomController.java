@@ -185,6 +185,12 @@ public class AllRoomController extends JFrame implements ValidationMessage, Acti
 
         String actionKey = e.getActionCommand();
         if (e.getSource() == addANewRoom) {
+
+            if (tfRoomName.getText().trim().equals("")) {
+                errorMessage("Input Room Name");
+                return;
+            }
+
             Room room = new Room();
             room.setBook(false);
 

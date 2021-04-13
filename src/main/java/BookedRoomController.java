@@ -1,6 +1,8 @@
 import BookingRoom.RoomType;
 import Utils.ConstantsKey;
 import Utils.DBUtils;
+import layout.ButtonColumn;
+import layout.ColorRenderer;
 import model.Room;
 import payment.Payment;
 import validation.ValidationMessage;
@@ -8,6 +10,7 @@ import validation.ValidationMessage;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,8 +24,6 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
     private final JPanel mainPanel = new JPanel();
     private final JPanel rightPanel = new JPanel();
     private final JTextField tfRoomName = new JTextField(10);
-    private final JTextField tfRoomPrice = new JTextField(10);
-    private final JTextField tfCustomerEmail = new JTextField(10);
     private JButton addANewRoom;
     private JTextArea lbWay;
     private ArrayList<Room> rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_BUSY);
@@ -81,18 +82,59 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
         String col[] = {"Pos", "Team", "P", "W", "A", "B"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
         for (Room room : rooms) {
-            Object[] data2 = {"P" + room.getRoomNumber(), room.getCustomerName(), room.getCustomerPhone(), room.getFromDate(), room.getToDate(), "A"};
+            Object[] data2 = {"P" + room.getRoomNumber(), room.getCustomerName(), room.getCustomerPhone(), room.getFromDate(), room.getToDate(), "Checkout"};
             tableModel.addRow(data2);
         }
 
         JTable table = new JTable(tableModel);
+        table.setDefaultRenderer(Color.class, new ColorRenderer(true));
+        Action delete = new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                JTable table = (JTable) e.getSource();
+                int modelRow = Integer.valueOf(e.getActionCommand());
+                Room room = rooms.get(modelRow);
+                roomDetailDialog(room);
+            }
+        };
+
+        ButtonColumn buttonColumn = new ButtonColumn(table, delete, 5);
+        buttonColumn.setMnemonic(KeyEvent.VK_D);
+
+        table.setDefaultRenderer(Double.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                c.setForeground(((Double) value) > 0 ? Color.BLUE : Color.RED);
+                return c;
+            }
+        });
 
         rightPanel.add(table);
         return rightPanel;
     }
 
+    private void roomDetailDialog(Room room) {
+        JFrame f = new JFrame();
+        JDialog d = new JDialog(f, "Checkout", true);
+        d.setLayout(new FlowLayout());
+        JButton checkout = new JButton("Confirm");
+
+        checkout.addActionListener(e -> {
+            d.setVisible(false);
+            DBUtils.checkoutRoom(room);
+            rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_BUSY);
+            refreshData();
+        });
+        d.add(new JLabel("Do you wanna checkout?"), BorderLayout.SOUTH);
+//        d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
+        d.add(checkout);
+        d.setSize(300, 100);
+        d.setBounds(300, 200, 200, 200);
+        d.setVisible(true);
+    }
+
     private JMenuBar drawMenu() {
-        JMenu menuFile = new JMenu("File");
+        JMenu menuFile = new JMenu("Menu");
 //        menuFile.add(createMenuItem("Danh Sách Phòng", KeyEvent.VK_X, Event.CTRL_MASK));
 //        menuFile.add(createMenuItem("Phòng Trống", KeyEvent.VK_X, Event.CTRL_MASK));
 //        menuFile.add(createMenuItem("Phòng", KeyEvent.VK_X, Event.CTRL_MASK));
@@ -172,6 +214,13 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
         return btn;
     }
 
+    private void refreshData() {
+        rightPanel.removeAll();
+        drawRightLayout();
+        rightPanel.revalidate();
+        rightPanel.repaint();
+    }
+
     @Override
     public void errorMessage(String errorMessage) {
         JOptionPane.showMessageDialog(mainPanel, errorMessage);
@@ -187,9 +236,14 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
 
         String actionKey = e.getActionCommand();
         if (e.getSource() == addANewRoom) {
+
+            if (tfRoomName.getText().trim().equals("")) {
+                errorMessage("Input Room Name");
+                return;
+            }
+
             Room room = new Room();
             room.setBook(false);
-
             int price = Integer.parseInt(cbPrice.getSelectedItem().toString());
             if (price <= 50) {
                 room.setRoomType(RoomType.CHEAP);

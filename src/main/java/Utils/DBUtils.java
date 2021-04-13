@@ -83,6 +83,30 @@ public class DBUtils {
         }
     }
 
+    public static void checkoutRoom(Room room) {
+        String roomNumber = room.getRoomNumber();
+        try {
+
+            String sql = "UPDATE room SET customerName=?, customerEmail=?, customerPhone=?, available=?, fromDate=?, toDate=? WHERE roomNumber=?";
+            PreparedStatement statement = getConnection().prepareStatement(sql);
+            statement.setString(1, "");
+            statement.setString(2, "");
+            statement.setString(3, "");
+            statement.setString(4, "Ready");
+            statement.setString(5, "");
+            statement.setString(6, "");
+            statement.setString(7, roomNumber);
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("successfully!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void updateRoomInformation(Room room) {
         String customerName = room.getCustomerName();
         String customerEmail = room.getCustomerEmail();
@@ -138,6 +162,19 @@ public class DBUtils {
             PreparedStatement st = (PreparedStatement) connection
                     .prepareStatement("UPDATE Account " +
                             "SET isLogin = 1 WHERE id = 1");
+            st.executeUpdate();
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    public static void logout() {
+        try {
+            connection = DBUtils.getConnection();
+            PreparedStatement st = (PreparedStatement) connection
+                    .prepareStatement("UPDATE Account " +
+                            "SET isLogin = 0 WHERE id = 1");
             st.executeUpdate();
 
         } catch (Exception e) {
