@@ -328,7 +328,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             refreshData();
         }
 
-
         if (actionKey.equals("Làm Mới1")) {
             if (modelFrom.getValue() == null) {
                 errorMessage("Input From Date");
