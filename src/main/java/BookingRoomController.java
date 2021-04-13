@@ -240,7 +240,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             doBookRoom(room);
             Payment payment = new Payment();
             payment.payment(ConstantsKey.PAYMENT_CASH);
-
         });
 
         card.addActionListener(e -> {
@@ -251,7 +250,12 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             payment.payment(ConstantsKey.PAYMENT_CARD);
         });
         d.add(new JLabel("Need To Pay"), BorderLayout.SOUTH);
-        d.add(new JLabel(payMoney(Integer.parseInt(room.getPrice())) + " $"), BorderLayout.SOUTH);
+        String price = payMoney(Integer.parseInt(room.getPrice()));
+        if (price.contains("-")) {
+            errorMessage("to date is smaller than from date");
+            return;
+        }
+        d.add(new JLabel(price + " $"), BorderLayout.SOUTH);
 //        d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
         d.add(card);
         d.add(cash);
@@ -304,7 +308,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         String actionKey = e.getActionCommand();
         if (actionKey.equals("Danh Sách Phòng")) {
             AllRoomController bookingRoomController = new AllRoomController();
-            bookingRoomController.MapLayout("Ahihi");
+            bookingRoomController.MapLayout("Booking Room");
         }
 
         if (actionKey.equals("Phòng Đã Đặt")) {
@@ -320,7 +324,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         if (actionKey.equals("Logout")) {
             DBUtils.logout();
             java.awt.Window win[] = java.awt.Window.getWindows();
-            for(int i=0;i<win.length;i++){
+            for (int i = 0; i < win.length; i++) {
                 win[i].dispose();
             }
             Main frame = new Main();

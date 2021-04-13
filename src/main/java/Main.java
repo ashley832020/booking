@@ -123,6 +123,6 @@ public class Main extends JFrame implements ValidationMessage {
     private void goToMainScreen() {
         dispose();
         BookingRoomController bookingRoomController = new BookingRoomController();
-        bookingRoomController.MapLayout("Ahihi");
+        bookingRoomController.MapLayout("Booking Room");
     }
 }
