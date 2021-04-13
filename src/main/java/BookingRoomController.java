@@ -35,7 +35,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     private final JTextField tfCustomerEmail = new JTextField(10);
     private JButton btnRefresh;
     private JTextArea lbWay;
-    private ArrayList<Room> rooms = DBUtils.getRooms(false);
+    private ArrayList<Room> rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
     UtilDateModel modelFrom = new UtilDateModel();
     UtilDateModel modelTo = new UtilDateModel();
 
@@ -151,6 +151,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     private JMenuBar drawMenu() {
         JMenu menuFile = new JMenu("File");
         menuFile.add(createMenuItem("Danh Sách Phòng", KeyEvent.VK_X, Event.ENTER));
+        menuFile.add(createMenuItem("Phòng Đã Đặt", KeyEvent.VK_X, Event.ENTER));
         menuFile.add(createMenuItem("Làm Mới", KeyEvent.VK_X, Event.CTRL_MASK));
         JMenu menuHelp = new JMenu("Help");
         menuHelp.setMnemonic(KeyEvent.VK_H);
@@ -184,7 +185,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         cb.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // search
-                rooms = DBUtils.getRooms(false, cb.getSelectedItem().toString());
+                rooms = DBUtils.getRoomsWithCapacity(false, cb.getSelectedItem().toString());
                 refreshData();
             }
         });
@@ -291,7 +292,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             bookingRoom.setErrorMessage(this);
             bookingRoom.tryToBookRoom();
 
-            rooms = DBUtils.getRooms(false);
+            rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
             refreshData();
             errorMessage("Successfully!");
         });
@@ -335,13 +336,18 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             bookingRoomController.MapLayout("Ahihi");
         }
 
+        if (actionKey.equals("Phòng Đã Đặt")) {
+            BookedRoomController bookingRoomController = new BookedRoomController();
+            bookingRoomController.MapLayout("Phòng Đã Đặt");
+        }
+
         if (e.getSource() == btnRefresh) {
-            rooms = DBUtils.getRooms(false);
+            rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
             refreshData();
         }
 
         if (actionKey.equals("Làm Mới")) {
-            rooms = DBUtils.getRooms(false);
+            rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
             refreshData();
         }
 

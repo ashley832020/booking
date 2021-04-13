@@ -166,7 +166,7 @@ public class DBUtils {
         }
     }
 
-    public static ArrayList<Room> getRooms(Boolean isShowAll) {
+    public static ArrayList<Room> getRoomsBusyOrReady(Boolean isShowAll, String readyOrBusy) {
 
         ArrayList rooms = new ArrayList();
         try {
@@ -176,7 +176,7 @@ public class DBUtils {
             if (isShowAll) {
                 query = "SELECT * FROM room";
             } else {
-                query = "SELECT * FROM room where available =" + "'" + "Ready" + "'";
+                query = "SELECT * FROM room where available =" + "'" + readyOrBusy + "'";
             }
 
             ResultSet rs = st.executeQuery(query);
@@ -191,6 +191,8 @@ public class DBUtils {
                 String available = rs.getString("available");
                 String price = rs.getString("price");
                 String type = rs.getString("type");
+                String fromDate = rs.getString("fromDate");
+                String toDate = rs.getString("toDate");
                 RoomType roomType = RoomType.CHEAP;
                 switch (type) {
                     case  "CHEAP" : {
@@ -216,6 +218,8 @@ public class DBUtils {
                 room.setPrice(price);
                 room.setCapacity(capacity);
                 room.setAvailable(available);
+                room.setFromDate(fromDate);
+                room.setToDate(toDate);
 
                 rooms.add(room);
             }
@@ -226,7 +230,7 @@ public class DBUtils {
         return rooms;
     }
 
-    public static ArrayList<Room> getRooms(Boolean isShowAll, String key) {
+    public static ArrayList<Room> getRoomsWithCapacity(Boolean isShowAll, String key) {
 
         ArrayList rooms = new ArrayList();
         try {

@@ -1,7 +1,8 @@
-import Utils.DBUtils;
-import validation.ValidationMessage;
-import model.Room;
 import BookingRoom.RoomType;
+import Utils.ConstantsKey;
+import Utils.DBUtils;
+import model.Room;
+import validation.ValidationMessage;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,7 +15,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class RoomListController extends JFrame implements ValidationMessage, ActionListener {
+public class BookedRoomController extends JFrame implements ValidationMessage, ActionListener {
 
     private final JPanel mainPanel = new JPanel();
     private final JPanel rightPanel = new JPanel();
@@ -23,7 +24,7 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
     private final JTextField tfCustomerEmail = new JTextField(10);
     private JButton addANewRoom;
     private JTextArea lbWay;
-    private ArrayList<Room> rooms = DBUtils.getRoomsBusyOrReady(true, "");
+    private ArrayList<Room> rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_BUSY);
     JComboBox<String> cbPrice = null;
     JComboBox<String> cbCapacity = null;
 
@@ -79,7 +80,7 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
         String col[] = {"Pos", "Team", "P", "W", "A"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
         for (Room room : rooms) {
-            Object[] data2 = {"P" + room.getRoomNumber(), room.getPrice() + " $", room.getCapacity() + " people", room.getRoomType(), room.getAvailable() + ""};
+            Object[] data2 = {"P" + room.getRoomNumber(), room.getCustomerName(), room.getCustomerPhone(), room.getFromDate(), room.getToDate()};
             tableModel.addRow(data2);
         }
 
