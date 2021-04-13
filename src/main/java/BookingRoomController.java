@@ -234,26 +234,26 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
         cash.addActionListener(e -> {
             d.setVisible(false);
-            Payment payment = new Payment();
-            payment.payment(ConstantsKey.PAYMENT_CASH);
             room.setPaymentMethod(ConstantsKey.PAYMENT_CASH);
             doBookRoom(room);
+            Payment payment = new Payment();
+            payment.payment(ConstantsKey.PAYMENT_CASH);
 
         });
 
         card.addActionListener(e -> {
             d.setVisible(false);
-            Payment payment = new Payment();
-            payment.payment(ConstantsKey.PAYMENT_CARD);
             room.setPaymentMethod(ConstantsKey.PAYMENT_CARD);
             doBookRoom(room);
+            Payment payment = new Payment();
+            payment.payment(ConstantsKey.PAYMENT_CARD);
         });
         d.add(new JLabel("Need To Pay"), BorderLayout.SOUTH);
         d.add(new JLabel(payMoney(Integer.parseInt(room.getPrice())) + " $"), BorderLayout.SOUTH);
 //        d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
         d.add(card);
         d.add(cash);
-        d.setSize(300, 200);
+        d.setSize(300, 100);
         d.setBounds(300, 200, 200, 200);
         d.setVisible(true);
     }

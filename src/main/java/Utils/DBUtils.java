@@ -106,7 +106,7 @@ public class DBUtils {
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("updated successfully!");
+                System.out.println("successfully!");
             }
 
         } catch (Exception e) {
