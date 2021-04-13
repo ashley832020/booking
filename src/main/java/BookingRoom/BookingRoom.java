@@ -2,10 +2,10 @@ package BookingRoom;
 
 import Utils.DBUtils;
 import model.Room;
-import pattern.EmailValidate;
-import pattern.PhoneValidate;
-import pattern.RoomFactory;
-import pattern.ValidationStrategy;
+import validation.EmailValidate;
+import validation.PhoneValidate;
+import validation.RoomFactory;
+import validation.ValidationStrategy;
 import template.RoomTemplate;
 
 public class BookingRoom extends RoomTemplate {

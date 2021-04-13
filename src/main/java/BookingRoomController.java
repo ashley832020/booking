@@ -1,6 +1,7 @@
 import BookingRoom.BookingRoom;
+import Utils.ConstantsKey;
 import Utils.DBUtils;
-import Utils.ValidationMessage;
+import validation.ValidationMessage;
 import layout.ButtonColumn;
 import layout.ColorRenderer;
 import model.Room;
@@ -149,7 +150,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
     private JMenuBar drawMenu() {
         JMenu menuFile = new JMenu("File");
-        menuFile.add(createMenuItem("Danh Sách Phòng", KeyEvent.VK_X, Event.CTRL_MASK));
+        menuFile.add(createMenuItem("Danh Sách Phòng", KeyEvent.VK_X, Event.ENTER));
         menuFile.add(createMenuItem("Làm Mới", KeyEvent.VK_X, Event.CTRL_MASK));
         JMenu menuHelp = new JMenu("Help");
         menuHelp.setMnemonic(KeyEvent.VK_H);
@@ -266,21 +267,21 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         JDialog d = new JDialog(f, "Dialog Example", true);
         d.setLayout(new FlowLayout());
         JButton b = new JButton("OK");
-//
+
+        if (modelFrom.getValue() == null) {
+            errorMessage("Input From Date");
+            return;
+        }
+
+        if (modelTo.getValue() == null) {
+            errorMessage("Input To Date");
+            return;
+        }
+
         b.addActionListener(e -> {
             d.setVisible(false);
-
-            if (modelFrom.getValue() == null) {
-                errorMessage("Input From Date");
-                return;
-            }
-
-            if (modelTo.getValue() == null) {
-                errorMessage("Input To Date");
-                return;
-            }
             room.setBook(true);
-            room.setAvailable("Busy");
+            room.setAvailable(ConstantsKey.ROOM_STATUS_BUSY);
             room.setCustomerName(tfCustomerName.getText());
             room.setCustomerPhone(tfCustomerPhone.getText());
             room.setCustomerEmail(tfCustomerEmail.getText());
@@ -288,25 +289,39 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             bookingRoom.setErrorMessage(this);
             bookingRoom.tryToBookRoom();
 
+            rooms = DBUtils.getRooms(false);
             refreshData();
+            errorMessage("Successfully!");
         });
-        d.add(new JLabel(room.getRoomNumber()), BorderLayout.SOUTH);
-        d.add(new JLabel(room.getCustomerName()), BorderLayout.SOUTH);
+        d.add(new JLabel("Have To Pay"), BorderLayout.SOUTH);
+        d.add(new JLabel(payMoney(Integer.parseInt(room.getPrice())) + " $"), BorderLayout.SOUTH);
         d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
         d.add(b);
         d.setSize(300, 300);
         d.setBounds(300, 200, 200, 200);
         d.setVisible(true);
-
     }
 
     private void refreshData() {
-
-        //        remove(rightPanel);
         rightPanel.removeAll();
         drawRightLayout();
         rightPanel.revalidate();
         rightPanel.repaint();
+    }
+
+    private String payMoney(Integer moneyPerDay) {
+        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
+        try {
+            Date date1 = myFormat.parse(modelFrom.getDay() + " " + modelFrom.getMonth() + " " + modelFrom.getYear());
+            Date date2 = myFormat.parse(modelTo.getDay() + " " + modelTo.getMonth() + " " + modelTo.getYear());
+            long diff = date2.getTime() - date1.getTime();
+            long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            return (days * moneyPerDay) + "";
+//            System.out.println("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+        } catch (ParseException exx) {
+            exx.printStackTrace();
+        }
+        return "";
     }
 
     @Override
@@ -338,32 +353,8 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
                 errorMessage("Input To Date");
                 return;
             }
-
-            SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
-            try {
-                Date date1 = myFormat.parse(modelFrom.getDay() + " " + modelFrom.getMonth() + " " + modelFrom.getYear());
-                Date date2 = myFormat.parse(modelTo.getDay() + " " + modelTo.getMonth() + " " + modelTo.getYear());
-                long diff = date2.getTime() - date1.getTime();
-                System.out.println("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
-            } catch (ParseException exx) {
-                exx.printStackTrace();
-            }
         }
-
-        //        rooms.remove(0);
-////        remove(rightPanel);
-//        rightPanel.removeAll();
-//        drawRightLayout();
-//        rightPanel.revalidate();
-//        rightPanel.repaint();
-//
-//        BookingRoom bookingRoom = new BookingRoom(rooms.get(0));
-//        bookingRoom.setErrorMessage(this);
-//        bookingRoom.tryToBookRoom();
-
     }
-
-
 }
 
 

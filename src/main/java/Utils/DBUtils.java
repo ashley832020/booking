@@ -15,9 +15,7 @@ public class DBUtils {
     static final String DB_PASS = "root";
 
     public static Connection getConnection() {
-        if (connection != null) {
-            return connection;
-        } else {
+        if (connection == null) {
             try {
                 Class.forName(JDBC_DRIVER);
                 connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
@@ -28,8 +26,8 @@ public class DBUtils {
                 // TODO: handle exception
                 e.printStackTrace();
             }
-            return connection;
         }
+        return connection;
     }
 
     public static Boolean isExistRoomOrNot(String roomName) {
@@ -53,8 +51,8 @@ public class DBUtils {
             String query = "SELECT available FROM room WHERE roomNumber = " + "'" + roomNumber + "'";
             ResultSet rs = st.executeQuery(query);
             if (rs.next()) {
-                int available = rs.getInt("available");
-                return available == 1;
+                String available = rs.getString("available");
+                return available.equals("Ready");
             }
         } catch (Exception e) {
             System.out.format("Exception \n");
@@ -78,8 +76,6 @@ public class DBUtils {
                     subQuery;
             Integer rs = st.executeUpdate(query);
             st.close();
-            System.out.format("bookRoom Okkkkk \n");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,7 +100,7 @@ public class DBUtils {
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("An existing user was updated successfully!");
+                System.out.println("updated successfully!");
             }
 
         } catch (Exception e) {

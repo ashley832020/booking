@@ -1,4 +1,4 @@
-package Utils;
+package validation;
 
 public interface ValidationMessage {
     void errorMessage(String errorMessage);

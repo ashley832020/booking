@@ -1,5 +1,5 @@
 import Utils.DBUtils;
-import Utils.ValidationMessage;
+import validation.ValidationMessage;
 import model.User;
 
 import javax.swing.*;

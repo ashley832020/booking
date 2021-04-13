@@ -1,7 +1,6 @@
 package template;
 
-import Utils.ValidationMessage;
-import model.Room;
+import validation.ValidationMessage;
 
 public abstract class RoomTemplate {
 
