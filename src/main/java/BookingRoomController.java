@@ -285,6 +285,8 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             room.setCustomerName(tfCustomerName.getText());
             room.setCustomerPhone(tfCustomerPhone.getText());
             room.setCustomerEmail(tfCustomerEmail.getText());
+            room.setFromDate(modelFrom.getDay() + "/" + modelFrom.getMonth() + "/" + modelFrom.getYear());
+            room.setToDate(modelTo.getDay() + "/" + modelTo.getMonth() + "/" + modelTo.getYear());
             BookingRoom bookingRoom = new BookingRoom(room);
             bookingRoom.setErrorMessage(this);
             bookingRoom.tryToBookRoom();

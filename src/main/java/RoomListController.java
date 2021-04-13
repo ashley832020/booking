@@ -21,7 +21,7 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
     private final JTextField tfRoomName = new JTextField(10);
     private final JTextField tfRoomPrice = new JTextField(10);
     private final JTextField tfCustomerEmail = new JTextField(10);
-    private JButton btnSearch;
+    private JButton addANewRoom;
     private JTextArea lbWay;
     private ArrayList<Room> rooms = DBUtils.getRooms(true);
     JComboBox<String> cbPrice = null;
@@ -157,7 +157,7 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
     private void makeSearchButton(JPanel panel) {
         JPanel panelRunTemp = new JPanel(new GridLayout(1, 2, 15, 5));
         panelRunTemp.setBorder(new EmptyBorder(0, 15, 0, 5));
-        panelRunTemp.add(btnSearch = CustomButton("OK"));
+        panelRunTemp.add(addANewRoom = CustomButton("OK"));
         JPanel panelRun = new JPanel(new BorderLayout());
         panelRun.setBorder(new TitledBorder("Add New Room"));
         panelRun.add(panelRunTemp);
@@ -184,7 +184,7 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
     public void actionPerformed(ActionEvent e) {
 
         String actionKey = e.getActionCommand();
-        if (e.getSource() == btnSearch) {
+        if (e.getSource() == addANewRoom) {
             Room room = new Room();
             room.setBook(false);
 

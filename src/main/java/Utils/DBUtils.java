@@ -67,12 +67,14 @@ public class DBUtils {
         String price = room.getPrice();
         String capacity = room.getCapacity();
         String type = room.getRoomType().name();
+        String fromDate = room.getFromDate();
+        String toDate = room.getToDate();
         String subQuery = "VALUES" + "(" + "'" + roomNumber + "'" + "," + "'" + price +
-                "'" + "," + "'" + capacity + "'" + "," + "'" + type + "'" + ")";
+                "'" + "," + "'" + capacity + "'" + "," + "'" + type + "'" + "," + "'" + fromDate + "'" + "," + "'" + toDate + "'" + ")";
         try {
 
             Statement st = connection.createStatement();
-            String query = "INSERT INTO room " + "(roomNumber,price,capacity,type)" +
+            String query = "INSERT INTO room " + "(roomNumber,price,capacity,type,fromDate,toDate)" +
                     subQuery;
             Integer rs = st.executeUpdate(query);
             st.close();
@@ -87,16 +89,20 @@ public class DBUtils {
         String customerPhone = room.getCustomerPhone();
         String roomNumber = room.getRoomNumber();
         String roomStatus = room.getAvailable();
+        String fromDate = room.getFromDate();
+        String toDate = room.getToDate();
 
         try {
 
-            String sql = "UPDATE room SET customerName=?, customerEmail=?, customerPhone=?, available=? WHERE roomNumber=?";
+            String sql = "UPDATE room SET customerName=?, customerEmail=?, customerPhone=?, available=?, fromDate=?, toDate=? WHERE roomNumber=?";
             PreparedStatement statement = getConnection().prepareStatement(sql);
             statement.setString(1, customerName);
             statement.setString(2, customerEmail);
             statement.setString(3, customerPhone);
             statement.setString(4, roomStatus);
-            statement.setString(5, roomNumber);
+            statement.setString(5, fromDate);
+            statement.setString(6, toDate);
+            statement.setString(7, roomNumber);
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {

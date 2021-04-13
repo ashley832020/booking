@@ -29,7 +29,7 @@ public abstract class RoomTemplate {
             return;
         }
 
-        if(checkExistRoom()) {
+        if(!checkExistRoom()) {
             errorMessage.errorMessage("Not Available");
             System.out.format("Room Exist \n");
             return;
