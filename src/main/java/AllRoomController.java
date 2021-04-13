@@ -14,7 +14,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class RoomListController extends JFrame implements ValidationMessage, ActionListener {
+public class AllRoomController extends JFrame implements ValidationMessage, ActionListener {
 
     private final JPanel mainPanel = new JPanel();
     private final JPanel rightPanel = new JPanel();

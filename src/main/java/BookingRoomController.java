@@ -38,8 +38,8 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     private JTextArea lbWay;
 
     private ArrayList<Room> rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
-    UtilDateModel modelFrom = new UtilDateModel();
-    UtilDateModel modelTo = new UtilDateModel();
+    private final UtilDateModel modelFrom = new UtilDateModel();
+    private final UtilDateModel modelTo = new UtilDateModel();
 
     public void MapLayout(String title) {
         setTitle(title);
@@ -86,7 +86,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         rightPanel.setLayout(new BorderLayout());
         rightPanel.add(mainPanel, BorderLayout.WEST);
 
-        String col[] = {"Pos", "Team", "P", "W", "K"};
+        String col[] = {"A", "B", "C", "D", "E"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
         for (Room room : rooms) {
             Object[] data2 = {"P" + room.getRoomNumber(), room.getPrice() + " $", room.getCapacity() + " people", room.getAvailable() + "", "Book"};
@@ -101,7 +101,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
                 int modelRow = Integer.valueOf(e.getActionCommand());
                 Room room = rooms.get(modelRow);
                 roomDetailDialog(room);
-//                ((DefaultTableModel)table.getModel()).removeRow(modelRow);
             }
         };
 
@@ -152,12 +151,10 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         panel.setBorder(new TitledBorder(title));
         panel.add(panelSmall);
         final JComboBox<String> cb = new JComboBox<String>(choices);
-        cb.setMaximumSize(cb.getPreferredSize()); // added code
-        cb.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
-        //cb.setVisible(true); // Not needed
+        cb.setMaximumSize(cb.getPreferredSize());
+        cb.setAlignmentX(Component.CENTER_ALIGNMENT);
         cb.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // search
                 rooms = DBUtils.getRoomsWithCapacity(false, cb.getSelectedItem().toString());
                 refreshData();
             }
@@ -178,8 +175,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     }
 
     private void makeCalendarForm(JPanel panelTop) {
-
-
         modelFrom.setDate(2020, 4, 1);
         JDatePanelImpl datePanel = new JDatePanelImpl(modelFrom, new Properties());
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
@@ -195,7 +190,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     }
 
     private void makeCalendarFormToDate(JPanel panelTop) {
-
         modelTo.setDate(2020, 4, 30);
         JDatePanelImpl datePanel = new JDatePanelImpl(modelTo, new Properties());
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
@@ -210,22 +204,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         panelTop.add(panel);
     }
 
-    private void makeSearchButton(JPanel panel) {
-        JPanel panelRunTemp = new JPanel(new GridLayout(1, 2, 15, 5));
-        panelRunTemp.setBorder(new EmptyBorder(0, 15, 0, 5));
-        panelRunTemp.add(btnRefresh = CustomButton("Refesh"));
-        JPanel panelRun = new JPanel(new BorderLayout());
-        panelRun.setBorder(new TitledBorder("Get Newst List"));
-        panelRun.add(panelRunTemp);
-        panel.add(panelRun);
-    }
-
-    private JButton CustomButton(String lable) {
-        JButton btn = new JButton(lable);
-        btn.addActionListener(this);
-        return btn;
-    }
-
     @Override
     public void errorMessage(String errorMessage) {
         JOptionPane.showMessageDialog(mainPanel, errorMessage);
@@ -238,12 +216,12 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
     private void roomDetailDialog(Room room) {
 
-        if(modelFrom.getValue() == null) {
+        if (modelFrom.getValue() == null) {
             errorMessage("Input from Date");
             return;
         }
 
-        if(modelTo.getValue() == null) {
+        if (modelTo.getValue() == null) {
             errorMessage("Input to Date");
             return;
         }
@@ -323,7 +301,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
         String actionKey = e.getActionCommand();
         if (actionKey.equals("Danh Sách Phòng")) {
-            RoomListController bookingRoomController = new RoomListController();
+            AllRoomController bookingRoomController = new AllRoomController();
             bookingRoomController.MapLayout("Ahihi");
         }
 
@@ -332,26 +310,9 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             bookingRoomController.MapLayout("Phòng Đã Đặt");
         }
 
-        if (e.getSource() == btnRefresh) {
-            rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
-            refreshData();
-        }
-
         if (actionKey.equals("Làm Mới")) {
             rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
             refreshData();
-        }
-
-        if (actionKey.equals("Làm Mới1")) {
-            if (modelFrom.getValue() == null) {
-                errorMessage("Input From Date");
-                return;
-            }
-
-            if (modelTo.getValue() == null) {
-                errorMessage("Input To Date");
-                return;
-            }
         }
     }
 }
