@@ -7,7 +7,7 @@ public class NormalIRoom implements IRoom {
     @Override
     public void book(Room room) {
         System.out.format("book NormalIRoom \n");
-        DBUtils.insertIntoDb(room);
+        DBUtils.updateRoomInformation(room);
     }
 
     @Override

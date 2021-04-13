@@ -64,16 +64,17 @@ public class DBUtils {
     }
 
     public static void insertIntoDb(Room room) {
-        String roomName = room.getRoomName();
-        String roomNumber = room.getRoomName();
-        String roomType = room.getCustomerEmail();
-        String customerName = room.getCustomerName();
-        String subQuery = "VALUES" + "(" + "'" + roomName + "'" + "," + "'" + roomNumber +
-                "'" + "," + "'" + roomType + "'" + "," + "'" + customerName + "'" + ")";
+
+        String roomNumber = room.getRoomNumber();
+        String price = room.getPrice();
+        String capacity = room.getCapacity();
+        String type = room.getRoomType().name();
+        String subQuery = "VALUES" + "(" + "'" + roomNumber + "'" + "," + "'" + price +
+                "'" + "," + "'" + capacity + "'" + "," + "'" + type + "'" + ")";
         try {
 
             Statement st = connection.createStatement();
-            String query = "INSERT INTO room " + "(roomNumber,customerName,customerEmail,customerPhone)" +
+            String query = "INSERT INTO room " + "(roomNumber,price,capacity,type)" +
                     subQuery;
             Integer rs = st.executeUpdate(query);
             st.close();
@@ -85,19 +86,21 @@ public class DBUtils {
     }
 
     public static void updateRoomInformation(Room room) {
-        String customerName = room.getRoomName();
-        String customerEmail = room.getCustomerName();
+        String customerName = room.getCustomerName();
+        String customerEmail = room.getCustomerEmail();
         String customerPhone = room.getCustomerPhone();
         String roomNumber = room.getRoomNumber();
+        String roomStatus = room.getAvailable();
 
         try {
 
-            String sql = "UPDATE room SET customerName=?, customerEmail=?, customerPhone=? WHERE roomNumber=?";
+            String sql = "UPDATE room SET customerName=?, customerEmail=?, customerPhone=?, available=? WHERE roomNumber=?";
             PreparedStatement statement = getConnection().prepareStatement(sql);
             statement.setString(1, customerName);
             statement.setString(2, customerEmail);
             statement.setString(3, customerPhone);
-            statement.setString(4, roomNumber);
+            statement.setString(4, roomStatus);
+            statement.setString(5, roomNumber);
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
@@ -161,14 +164,19 @@ public class DBUtils {
         }
     }
 
-    public static ArrayList<Room> getRooms() {
+    public static ArrayList<Room> getRooms(Boolean isShowAll) {
 
         ArrayList rooms = new ArrayList();
         try {
             Connection connection = DBUtils.getConnection();
             Statement st = connection.createStatement();
-            String query = "SELECT * FROM room where available = 1";
-//            String query = "SELECT * FROM room";
+            String query = "SELECT * FROM room";
+            if (isShowAll) {
+                query = "SELECT * FROM room";
+            } else {
+                query = "SELECT * FROM room where available =" + "'" + "Ready" + "'";
+            }
+
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
 //                id, roomNumber, customerName, customerEmail, customerPhone
@@ -177,8 +185,8 @@ public class DBUtils {
                 String customerName = rs.getString("customerName");
                 String customerEmail = rs.getString("customerEmail");
                 String customerPhone = rs.getString("customerPhone");
-                int capacity = rs.getInt("capacity");
-                int available = rs.getInt("available");
+                String capacity = rs.getString("capacity");
+                String available = rs.getString("available");
                 String price = rs.getString("price");
                 Room room = new Room();
                 room.setRoomType(RoomType.EXPENSIVE);
@@ -188,11 +196,54 @@ public class DBUtils {
                 room.setRoomNumber(roomNumber);
                 room.setPrice(price);
                 room.setCapacity(capacity);
-                if (available == 1) {
-                    room.setAvailable("Busy");
+                room.setAvailable(available);
+
+                rooms.add(room);
+            }
+
+        } catch (Exception e) {
+            System.out.format("Exception \n");
+        }
+        return rooms;
+    }
+
+    public static ArrayList<Room> getRooms(Boolean isShowAll, String key) {
+
+        ArrayList rooms = new ArrayList();
+        try {
+            Connection connection = DBUtils.getConnection();
+            Statement st = connection.createStatement();
+            String query = "SELECT * FROM room";
+            if (isShowAll) {
+                query = "SELECT * FROM room";
+            } else {
+                if (key.equals("All")) {
+                    query = "SELECT * FROM room where available =" + "'" + "Ready" + "'";
                 } else {
-                    room.setAvailable("Ready");
+                    query = "SELECT * FROM room where available =" + "'" + "Ready" + "'" + " AND capacity =" + "'" + key + "'";
                 }
+            }
+
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+//                id, roomNumber, customerName, customerEmail, customerPhone
+                int id = rs.getInt("id");
+                String roomNumber = rs.getString("roomNumber");
+                String customerName = rs.getString("customerName");
+                String customerEmail = rs.getString("customerEmail");
+                String customerPhone = rs.getString("customerPhone");
+                String capacity = rs.getString("capacity");
+                String available = rs.getString("available");
+                String price = rs.getString("price");
+                Room room = new Room();
+                room.setRoomType(RoomType.EXPENSIVE);
+                room.setCustomerName(customerName);
+                room.setCustomerEmail(customerEmail);
+                room.setCustomerPhone(customerPhone);
+                room.setRoomNumber(roomNumber);
+                room.setPrice(price);
+                room.setCapacity(capacity);
+                room.setAvailable(available);
 
                 rooms.add(room);
             }

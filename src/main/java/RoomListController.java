@@ -1,10 +1,8 @@
+import BookingRoom.BookingRoom;
 import Utils.DBUtils;
 import Utils.ValidationMessage;
 import model.Room;
-import org.jdatepicker.impl.DateComponentFormatter;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
+import BookingRoom.RoomType;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,18 +13,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Properties;
+import java.util.Objects;
 
 public class RoomListController extends JFrame implements ValidationMessage, ActionListener {
 
-    private JPanel mainPanel = new JPanel();
-    JPanel rightPanel = new JPanel();
-    JTextField tfBegin = new JTextField(10);
-    JTextField tfEnd = new JTextField(10);
-    JTextField tfEnd1 = new JTextField(10);
-    JTextField tfEnd2 = new JTextField(10);
+    private final JPanel mainPanel = new JPanel();
+    private final JPanel rightPanel = new JPanel();
+    private final JTextField tfRoomName = new JTextField(10);
+    private final JTextField tfRoomPrice = new JTextField(10);
+    private final JTextField tfCustomerEmail = new JTextField(10);
     private JButton btnSearch;
     private JTextArea lbWay;
+    private ArrayList<Room> rooms = DBUtils.getRooms(true);
+    JComboBox<String> cbPrice = null;
+    JComboBox<String> cbCapacity = null;
 
     public void MapLayout(String title) {
         setTitle(title);
@@ -44,7 +44,7 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
     private JPanel drawLeftLayout() {
 
         JPanel panel = new JPanel(new BorderLayout());
-        JPanel panelTop = new JPanel(new GridLayout(6, 1, 5, 5));
+        JPanel panelTop = new JPanel(new GridLayout(8, 1, 5, 5));
         JPanel panelBottom = new JPanel(new BorderLayout());
         JScrollPane scroll = new JScrollPane(lbWay = new JTextArea());
         scroll.setPreferredSize(panelTop.getPreferredSize());
@@ -53,11 +53,15 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
         panel.add(panelTop, BorderLayout.PAGE_START);
         panel.add(panelBottom, BorderLayout.CENTER);
 
-        makeJTextFieldGoFrom(panelTop, "Điểm đi", tfBegin);
-        makeJTextFieldGoFrom(panelTop, "Điểm đến", tfEnd);
+        makeJTextFieldGoFrom(panelTop, "Room Number", tfRoomName);
+        makeJTextFieldGoFrom(panelTop, "Price", tfRoomPrice);
 
-        makeCalendarForm(panelTop);
-        makeCalendarFormToDate(panelTop);
+        String[] capacity = {"1", "2", "3", "4"};
+        makeCapacityComboBox(panelTop, "Capacity", capacity);
+
+        String[] prices = {"50 $", "100 $", "150 $", "200 $",
+                "250 $", "300 $"};
+        makePriceComboBox(panelTop, "Price", prices);
 
         makeSearchButton(panelTop);
 
@@ -73,22 +77,15 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
         rightPanel.setLayout(new BorderLayout());
         rightPanel.add(mainPanel, BorderLayout.WEST);
 
-        JLabel lblNewLabel = new JLabel("Rooms");
-        lblNewLabel.setForeground(Color.BLACK);
-        lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 46));
-        lblNewLabel.setBounds(423, 13, 273, 93);
-        rightPanel.add(lblNewLabel);
-
-        ArrayList<Room> rooms = DBUtils.getRooms();
-        String col[] = {"Pos", "Team", "P", "W", "L"};
+        String col[] = {"Pos", "Team", "P", "W"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
         for (Room room : rooms) {
-            Object[] data2 = {room.getCustomerName(), room.getRoomType(), room.getCustomerEmail(), room.getCustomerEmail(), room.getCustomerPhone()};
+            Object[] data2 = {"P" + room.getRoomNumber(), room.getPrice(), room.getCapacity() + " people", room.getAvailable() + ""};
             tableModel.addRow(data2);
-
         }
 
         JTable table = new JTable(tableModel);
+
         rightPanel.add(table);
         return rightPanel;
     }
@@ -115,6 +112,38 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
         return mi;
     }
 
+    private void makeCapacityComboBox(JPanel panelTop, String title, String[] choices) {
+
+        JPanel panelSmall = new JPanel(new GridLayout(1, 2, 15, 5));
+        panelSmall.setPreferredSize(new Dimension(200, 30));
+        panelSmall.setBorder(new EmptyBorder(0, 15, 0, 5));
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(new TitledBorder(title));
+        panel.add(panelSmall);
+        cbCapacity = new JComboBox<String>(choices);
+        cbCapacity.setMaximumSize(cbCapacity.getPreferredSize()); // added code
+        cbCapacity.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
+        //cb.setVisible(true); // Not needed
+        panel.add(cbCapacity);
+        panelTop.add(panel);
+    }
+
+    private void makePriceComboBox(JPanel panelTop, String title, String[] choices) {
+
+        JPanel panelSmall = new JPanel(new GridLayout(1, 2, 15, 5));
+        panelSmall.setPreferredSize(new Dimension(200, 30));
+        panelSmall.setBorder(new EmptyBorder(0, 15, 0, 5));
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(new TitledBorder(title));
+        panel.add(panelSmall);
+        cbPrice = new JComboBox<String>(choices);
+        cbPrice.setMaximumSize(cbPrice.getPreferredSize()); // added code
+        cbPrice.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
+        //cb.setVisible(true); // Not needed
+        panel.add(cbPrice);
+        panelTop.add(panel);
+    }
+
     private void makeJTextFieldGoFrom(JPanel panelTop, String title, JTextField tf) {
         JPanel panelSmall = new JPanel(new GridLayout(1, 2, 15, 5));
         panelSmall.setPreferredSize(new Dimension(200, 30));
@@ -126,46 +155,12 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
         panelTop.add(panel);
     }
 
-    private void makeCalendarForm(JPanel panelTop) {
-
-        UtilDateModel model = new UtilDateModel();
-        model.setDate(1990, 8, 24);
-        JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
-        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
-
-        JPanel panelSmall = new JPanel(new GridLayout(1, 2, 15, 5));
-        panelSmall.setPreferredSize(new Dimension(200, 30));
-        panelSmall.setBorder(new EmptyBorder(0, 15, 0, 5));
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(new TitledBorder("From date"));
-        panel.add(panelSmall);
-        panel.add(datePicker);
-        panelTop.add(panel);
-    }
-
-    private void makeCalendarFormToDate(JPanel panelTop) {
-
-        UtilDateModel model = new UtilDateModel();
-        model.setDate(2020, 8, 24);
-        JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
-        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
-
-        JPanel panelSmall = new JPanel(new GridLayout(1, 2, 15, 5));
-        panelSmall.setPreferredSize(new Dimension(200, 30));
-        panelSmall.setBorder(new EmptyBorder(0, 15, 0, 5));
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(new TitledBorder("To date"));
-        panel.add(panelSmall);
-        panel.add(datePicker);
-        panelTop.add(panel);
-    }
-
     private void makeSearchButton(JPanel panel) {
         JPanel panelRunTemp = new JPanel(new GridLayout(1, 2, 15, 5));
         panelRunTemp.setBorder(new EmptyBorder(0, 15, 0, 5));
-        panelRunTemp.add(btnSearch = CustomButton("Tìm"));
+        panelRunTemp.add(btnSearch = CustomButton("OK"));
         JPanel panelRun = new JPanel(new BorderLayout());
-        panelRun.setBorder(new TitledBorder("Tìm đường"));
+        panelRun.setBorder(new TitledBorder("Add New Room"));
         panelRun.add(panelRunTemp);
         panel.add(panelRun);
     }
@@ -189,6 +184,46 @@ public class RoomListController extends JFrame implements ValidationMessage, Act
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        String actionKey = e.getActionCommand();
+        if (e.getSource() == btnSearch) {
+            Room room = new Room();
+            room.setBook(false);
+            room.setRoomType(RoomType.CHEAP);
+            room.setRoomNumber(tfRoomName.getText());
+            room.setPrice(Objects.requireNonNull(cbPrice.getSelectedItem()).toString());
+            room.setCapacity(Objects.requireNonNull(cbCapacity.getSelectedItem()).toString());
+            room.setAvailable("Ready");
+            if (DBUtils.isExistRoomOrNot(room.getRoomNumber())) {
+                errorMessage("Room Exist!");
+            } else {
+                errorMessage("Successfully");
+                DBUtils.insertIntoDb(room);
+                rooms.add(room);
+//        remove(rightPanel);
+                rightPanel.removeAll();
+                drawRightLayout();
+                rightPanel.revalidate();
+                rightPanel.repaint();
+            }
+        }
+
+        if (actionKey.equals("Exit")) {
+            System.exit(0);
+        }
+
+        if (actionKey.equals("Danh Sách Phòng")) {
+            System.exit(0);
+        }
+
+
+//
+//        BookingRoom bookingRoom = new BookingRoom(rooms.get(0));
+//        bookingRoom.setErrorMessage(this);
+//        bookingRoom.tryToBookRoom();
 
     }
+
+
 }
+
+

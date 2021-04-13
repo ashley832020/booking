@@ -10,10 +10,37 @@ public class Room {
     private String roomNumber;
     private String price;
     private RoomType roomType;
-    private Integer capacity;
+    private String capacity;
     private String available;
+    private String fromDate;
+    private String toDate;
+    private Boolean isBook;
 
-    public Integer getCapacity() {
+    public Boolean getBook() {
+        return isBook;
+    }
+
+    public void setBook(Boolean book) {
+        isBook = book;
+    }
+
+    public String getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(String fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(String toDate) {
+        this.toDate = toDate;
+    }
+
+    public String getCapacity() {
         return capacity;
     }
 
@@ -25,7 +52,7 @@ public class Room {
         this.available = available;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(String capacity) {
         this.capacity = capacity;
     }
 

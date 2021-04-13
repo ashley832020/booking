@@ -20,10 +20,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
@@ -36,11 +32,12 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     private final JTextField tfCustomerName = new JTextField(10);
     private final JTextField tfCustomerPhone = new JTextField(10);
     private final JTextField tfCustomerEmail = new JTextField(10);
-    private JButton btnSearch;
+    private JButton btnRefresh;
     private JTextArea lbWay;
-    private ArrayList<Room> rooms = DBUtils.getRooms();
+    private ArrayList<Room> rooms = DBUtils.getRooms(false);
     UtilDateModel modelFrom = new UtilDateModel();
     UtilDateModel modelTo = new UtilDateModel();
+
     public void MapLayout(String title) {
         setTitle(title);
         setLayout(new BorderLayout(5, 5));
@@ -70,13 +67,12 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         makeJTextFieldGoFrom(panelTop, "Phone", tfCustomerPhone);
         makeJTextFieldGoFrom(panelTop, "Email", tfCustomerEmail);
 
-        String[] dayChoices = {"1 day", "2 days", "3 days", "4 days",
-                "5 days", "6 days"};
-        makeDaysNumber(panelTop, "How many days?", dayChoices);
+//        String[] dayChoices = {"1 day", "2 days", "3 days", "4 days",
+//                "5 days", "6 days"};
+//        makeDaysNumber(panelTop, "How many days?", dayChoices);
 
-        String[] numberChoices = {"1", "2", "3", "4",
-                "5", "6"};
-        makeDaysNumber(panelTop, "How many people?", numberChoices);
+        String[] numberChoices = {"All", "1", "2", "3", "4"};
+        makeDaysNumber(panelTop, "How many beds?", numberChoices);
 
         makeCalendarForm(panelTop);
         makeCalendarFormToDate(panelTop);
@@ -104,7 +100,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         String col[] = {"Pos", "Team", "P", "W", "K"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
         for (Room room : rooms) {
-            Object[] data2 = { "P" + room.getRoomNumber(), room.getPrice(), room.getCapacity()+" people", room.getAvailable() + "", "Book"};
+            Object[] data2 = {"P" + room.getRoomNumber(), room.getPrice(), room.getCapacity() + " people", room.getAvailable() + "", "Book"};
             tableModel.addRow(data2);
         }
 
@@ -154,8 +150,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     private JMenuBar drawMenu() {
         JMenu menuFile = new JMenu("File");
         menuFile.add(createMenuItem("Danh Sách Phòng", KeyEvent.VK_X, Event.CTRL_MASK));
-        menuFile.add(createMenuItem("Phòng Trống", KeyEvent.VK_X, Event.CTRL_MASK));
-        menuFile.add(createMenuItem("Phòng", KeyEvent.VK_X, Event.CTRL_MASK));
+        menuFile.add(createMenuItem("Làm Mới", KeyEvent.VK_X, Event.CTRL_MASK));
         JMenu menuHelp = new JMenu("Help");
         menuHelp.setMnemonic(KeyEvent.VK_H);
         menuHelp.add(createMenuItem("About", KeyEvent.VK_A, Event.CTRL_MASK));
@@ -185,6 +180,13 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         cb.setMaximumSize(cb.getPreferredSize()); // added code
         cb.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
         //cb.setVisible(true); // Not needed
+        cb.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // search
+                rooms = DBUtils.getRooms(false, cb.getSelectedItem().toString());
+                refreshData();
+            }
+        });
         panel.add(cb);
         panelTop.add(panel);
     }
@@ -236,9 +238,9 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     private void makeSearchButton(JPanel panel) {
         JPanel panelRunTemp = new JPanel(new GridLayout(1, 2, 15, 5));
         panelRunTemp.setBorder(new EmptyBorder(0, 15, 0, 5));
-        panelRunTemp.add(btnSearch = CustomButton("Searh"));
+        panelRunTemp.add(btnRefresh = CustomButton("Refesh"));
         JPanel panelRun = new JPanel(new BorderLayout());
-        panelRun.setBorder(new TitledBorder("Find Rooms"));
+        panelRun.setBorder(new TitledBorder("Get Newst List"));
         panelRun.add(panelRunTemp);
         panel.add(panelRun);
     }
@@ -268,24 +270,25 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         b.addActionListener(e -> {
             d.setVisible(false);
 
-            if(modelFrom.getValue() == null) {
+            if (modelFrom.getValue() == null) {
                 errorMessage("Input From Date");
                 return;
             }
 
-            if(modelTo.getValue() == null) {
+            if (modelTo.getValue() == null) {
                 errorMessage("Input To Date");
                 return;
             }
-
-
+            room.setBook(true);
+            room.setAvailable("Busy");
             room.setCustomerName(tfCustomerName.getText());
             room.setCustomerPhone(tfCustomerPhone.getText());
             room.setCustomerEmail(tfCustomerEmail.getText());
             BookingRoom bookingRoom = new BookingRoom(room);
             bookingRoom.setErrorMessage(this);
             bookingRoom.tryToBookRoom();
-            System.out.println("ahihihi");
+
+            refreshData();
         });
         d.add(new JLabel(room.getRoomNumber()), BorderLayout.SOUTH);
         d.add(new JLabel(room.getCustomerName()), BorderLayout.SOUTH);
@@ -297,29 +300,56 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
     }
 
+    private void refreshData() {
+
+        //        remove(rightPanel);
+        rightPanel.removeAll();
+        drawRightLayout();
+        rightPanel.revalidate();
+        rightPanel.repaint();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if(modelFrom.getValue() == null) {
-            errorMessage("Input From Date");
-            return;
+        String actionKey = e.getActionCommand();
+        if (actionKey.equals("Danh Sách Phòng")) {
+            RoomListController bookingRoomController = new RoomListController();
+            bookingRoomController.MapLayout("Ahihi");
         }
 
-        if(modelTo.getValue() == null) {
-            errorMessage("Input To Date");
-            return;
+        if (e.getSource() == btnRefresh) {
+            rooms = DBUtils.getRooms(false);
+            refreshData();
         }
 
-        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
-        try {
-            Date date1 = myFormat.parse(modelFrom.getDay() + " " + modelFrom.getMonth() + " " + modelFrom.getYear());
-            Date date2 = myFormat.parse(modelTo.getDay() + " " + modelTo.getMonth() + " " + modelTo.getYear());
-            long diff = date2.getTime() - date1.getTime();
-            System.out.println ("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
-        } catch (ParseException exx) {
-            exx.printStackTrace();
+        if (actionKey.equals("Làm Mới")) {
+            rooms = DBUtils.getRooms(false);
+            refreshData();
         }
 
+
+        if (actionKey.equals("Làm Mới1")) {
+            if (modelFrom.getValue() == null) {
+                errorMessage("Input From Date");
+                return;
+            }
+
+            if (modelTo.getValue() == null) {
+                errorMessage("Input To Date");
+                return;
+            }
+
+            SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
+            try {
+                Date date1 = myFormat.parse(modelFrom.getDay() + " " + modelFrom.getMonth() + " " + modelFrom.getYear());
+                Date date2 = myFormat.parse(modelTo.getDay() + " " + modelTo.getMonth() + " " + modelTo.getYear());
+                long diff = date2.getTime() - date1.getTime();
+                System.out.println("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+            } catch (ParseException exx) {
+                exx.printStackTrace();
+            }
+        }
 
         //        rooms.remove(0);
 ////        remove(rightPanel);

@@ -39,7 +39,11 @@ public class BookingRoom extends RoomTemplate {
     @Override
     public void bookRoom() {
         RoomFactory roomFactory = new RoomFactory();
-        IRoom iRoom = roomFactory.tryToBookRoom(RoomType.EXPENSIVE);
-        iRoom.book(room);
+        IRoom iRoom = roomFactory.tryToBookRoom(room.getRoomType());
+        if (room.getBook()) {
+            iRoom.book(room);
+        } else {
+            iRoom.insertRoom(room);
+        }
     }
 }
