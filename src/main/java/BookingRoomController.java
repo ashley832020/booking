@@ -121,21 +121,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         return rightPanel;
     }
 
-    public JScrollPane Login() {
-        JFrame f;
-        f = new JFrame();
-        String data[][] = {{"101", "Amit", "670000"},
-                {"102", "Jai", "780000"},
-                {"101", "Sachin", "700000"}};
-        String column[] = {"EMAIL", "NAME", "SALARY", "SALARY", "SALARY"};
-        JTable jt = new JTable(data, column);
-        jt.setBounds(30, 40, 200, 300);
-        JScrollPane sp = new JScrollPane(jt);
-        f.add(sp);
-        f.setSize(300, 400);
-        return sp;
-    }
-
     private JMenuBar drawMenu() {
         JMenu menuFile = new JMenu("File");
         menuFile.add(createMenuItem("Danh Sách Phòng", KeyEvent.VK_X, Event.ENTER));
@@ -248,44 +233,46 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
     @Override
     public void successMessage(String successMessage) {
-
+        JOptionPane.showMessageDialog(mainPanel, successMessage);
     }
 
     private void roomDetailDialog(Room room) {
+
+        if(modelFrom.getValue() == null) {
+            errorMessage("Input from Date");
+            return;
+        }
+
+        if(modelTo.getValue() == null) {
+            errorMessage("Input to Date");
+            return;
+        }
+
         JFrame f = new JFrame();
         JDialog d = new JDialog(f, "Thanh Toán", true);
         d.setLayout(new FlowLayout());
         JButton card = new JButton("CARD");
         JButton cash = new JButton("CASH");
 
-        if (modelFrom.getValue() == null) {
-            errorMessage("Input From Date");
-            return;
-        }
-
-        if (modelTo.getValue() == null) {
-            errorMessage("Input To Date");
-            return;
-        }
-
         cash.addActionListener(e -> {
             d.setVisible(false);
             Payment payment = new Payment();
-            payment.payment(ConstantsKey.PAYMENT_CARD);
+            payment.payment(ConstantsKey.PAYMENT_CASH);
+            room.setPaymentMethod(ConstantsKey.PAYMENT_CASH);
             doBookRoom(room);
-            errorMessage("Successfully with Cash payment!");
+
         });
 
         card.addActionListener(e -> {
             d.setVisible(false);
             Payment payment = new Payment();
             payment.payment(ConstantsKey.PAYMENT_CARD);
+            room.setPaymentMethod(ConstantsKey.PAYMENT_CARD);
             doBookRoom(room);
-            errorMessage("Successfully with Card payment!");
         });
         d.add(new JLabel("Need To Pay"), BorderLayout.SOUTH);
         d.add(new JLabel(payMoney(Integer.parseInt(room.getPrice())) + " $"), BorderLayout.SOUTH);
-        d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
+//        d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
         d.add(card);
         d.add(cash);
         d.setSize(300, 200);

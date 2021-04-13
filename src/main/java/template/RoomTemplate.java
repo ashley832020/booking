@@ -36,7 +36,6 @@ public abstract class RoomTemplate {
         }
 
         bookRoom();
-        errorMessage.successMessage("Done");
     }
 
     public void setErrorMessage(ValidationMessage errorMessage) {

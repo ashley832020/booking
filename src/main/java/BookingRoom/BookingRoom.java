@@ -41,6 +41,7 @@ public class BookingRoom extends RoomTemplate {
         RoomFactory roomFactory = new RoomFactory();
         IRoom iRoom = roomFactory.tryToBookRoom(room.getRoomType());
         if (room.getBook()) {
+            errorMessage.successMessage("Successfully with " + room.getPaymentMethod() + " payment");
             iRoom.book(room);
         } else {
             iRoom.insertRoom(room);

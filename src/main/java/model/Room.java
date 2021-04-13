@@ -2,6 +2,8 @@ package model;
 
 import BookingRoom.RoomType;
 
+import java.util.Date;
+
 public class Room {
     private String customerName;
     private String customerEmail;
@@ -13,6 +15,7 @@ public class Room {
     private String capacity;
     private String available;
     private String fromDate;
+    private String paymentMethod;
     private String toDate;
     private Boolean isBook;
 
@@ -110,5 +113,13 @@ public class Room {
 
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }
