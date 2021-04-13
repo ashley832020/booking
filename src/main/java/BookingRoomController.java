@@ -1,6 +1,7 @@
 import BookingRoom.BookingRoom;
 import Utils.ConstantsKey;
 import Utils.DBUtils;
+import payment.Payment;
 import validation.ValidationMessage;
 import layout.ButtonColumn;
 import layout.ColorRenderer;
@@ -35,6 +36,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
     private final JTextField tfCustomerEmail = new JTextField(10);
     private JButton btnRefresh;
     private JTextArea lbWay;
+
     private ArrayList<Room> rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
     UtilDateModel modelFrom = new UtilDateModel();
     UtilDateModel modelTo = new UtilDateModel();
@@ -43,7 +45,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         setTitle(title);
         setLayout(new BorderLayout(5, 5));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         add(drawMenu(), BorderLayout.PAGE_START);
         add(drawLeftLayout(), BorderLayout.WEST);
         add(drawRightLayout(), BorderLayout.CENTER);
@@ -68,17 +69,11 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         makeJTextFieldGoFrom(panelTop, "Phone", tfCustomerPhone);
         makeJTextFieldGoFrom(panelTop, "Email", tfCustomerEmail);
 
-//        String[] dayChoices = {"1 day", "2 days", "3 days", "4 days",
-//                "5 days", "6 days"};
-//        makeDaysNumber(panelTop, "How many days?", dayChoices);
-
         String[] numberChoices = {"All", "1", "2", "3", "4"};
         makeDaysNumber(panelTop, "How many beds?", numberChoices);
 
         makeCalendarForm(panelTop);
         makeCalendarFormToDate(panelTop);
-        makeSearchButton(panelTop);
-
         panel.setBorder(new EmptyBorder(0, 5, 0, 0));
         return panel;
     }
@@ -90,13 +85,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
         rightPanel.setLayout(new BorderLayout());
         rightPanel.add(mainPanel, BorderLayout.WEST);
-
-//        JLabel lblNewLabel = new JLabel("Rooms");
-//        lblNewLabel.setForeground(Color.BLACK);
-//        lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 46));
-//        lblNewLabel.setBounds(423, 13, 273, 93);
-//        rightPanel.add(lblNewLabel);
-
 
         String col[] = {"Pos", "Team", "P", "W", "K"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
@@ -265,9 +253,10 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
     private void roomDetailDialog(Room room) {
         JFrame f = new JFrame();
-        JDialog d = new JDialog(f, "Dialog Example", true);
+        JDialog d = new JDialog(f, "Thanh Toán", true);
         d.setLayout(new FlowLayout());
-        JButton b = new JButton("OK");
+        JButton card = new JButton("CARD");
+        JButton cash = new JButton("CASH");
 
         if (modelFrom.getValue() == null) {
             errorMessage("Input From Date");
@@ -279,30 +268,45 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             return;
         }
 
-        b.addActionListener(e -> {
+        cash.addActionListener(e -> {
             d.setVisible(false);
-            room.setBook(true);
-            room.setAvailable(ConstantsKey.ROOM_STATUS_BUSY);
-            room.setCustomerName(tfCustomerName.getText());
-            room.setCustomerPhone(tfCustomerPhone.getText());
-            room.setCustomerEmail(tfCustomerEmail.getText());
-            room.setFromDate(modelFrom.getDay() + "/" + modelFrom.getMonth() + "/" + modelFrom.getYear());
-            room.setToDate(modelTo.getDay() + "/" + modelTo.getMonth() + "/" + modelTo.getYear());
-            BookingRoom bookingRoom = new BookingRoom(room);
-            bookingRoom.setErrorMessage(this);
-            bookingRoom.tryToBookRoom();
-
-            rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
-            refreshData();
-            errorMessage("Successfully!");
+            Payment payment = new Payment();
+            payment.payment(ConstantsKey.PAYMENT_CARD);
+            doBookRoom(room);
+            errorMessage("Successfully with Cash payment!");
         });
-        d.add(new JLabel("Have To Pay"), BorderLayout.SOUTH);
+
+        card.addActionListener(e -> {
+            d.setVisible(false);
+            Payment payment = new Payment();
+            payment.payment(ConstantsKey.PAYMENT_CARD);
+            doBookRoom(room);
+            errorMessage("Successfully with Card payment!");
+        });
+        d.add(new JLabel("Need To Pay"), BorderLayout.SOUTH);
         d.add(new JLabel(payMoney(Integer.parseInt(room.getPrice())) + " $"), BorderLayout.SOUTH);
         d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
-        d.add(b);
-        d.setSize(300, 300);
+        d.add(card);
+        d.add(cash);
+        d.setSize(300, 200);
         d.setBounds(300, 200, 200, 200);
         d.setVisible(true);
+    }
+
+    private void doBookRoom(Room room) {
+        room.setBook(true);
+        room.setAvailable(ConstantsKey.ROOM_STATUS_BUSY);
+        room.setCustomerName(tfCustomerName.getText());
+        room.setCustomerPhone(tfCustomerPhone.getText());
+        room.setCustomerEmail(tfCustomerEmail.getText());
+        room.setFromDate(modelFrom.getDay() + "/" + modelFrom.getMonth() + "/" + modelFrom.getYear());
+        room.setToDate(modelTo.getDay() + "/" + modelTo.getMonth() + "/" + modelTo.getYear());
+        BookingRoom bookingRoom = new BookingRoom(room);
+        bookingRoom.setErrorMessage(this);
+        bookingRoom.tryToBookRoom();
+
+        rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
+        refreshData();
     }
 
     private void refreshData() {

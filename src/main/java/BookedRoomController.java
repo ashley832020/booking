@@ -2,6 +2,7 @@ import BookingRoom.RoomType;
 import Utils.ConstantsKey;
 import Utils.DBUtils;
 import model.Room;
+import payment.Payment;
 import validation.ValidationMessage;
 
 import javax.swing.*;
@@ -63,7 +64,7 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
                 "250", "300"};
         makePriceComboBox(panelTop, "Price ($) ", prices);
 
-        makeSearchButton(panelTop);
+//        makeSearchButton(panelTop);
 
         panel.setBorder(new EmptyBorder(0, 5, 0, 0));
         return panel;
@@ -77,10 +78,10 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
         rightPanel.setLayout(new BorderLayout());
         rightPanel.add(mainPanel, BorderLayout.WEST);
 
-        String col[] = {"Pos", "Team", "P", "W", "A"};
+        String col[] = {"Pos", "Team", "P", "W", "A", "B"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
         for (Room room : rooms) {
-            Object[] data2 = {"P" + room.getRoomNumber(), room.getCustomerName(), room.getCustomerPhone(), room.getFromDate(), room.getToDate()};
+            Object[] data2 = {"P" + room.getRoomNumber(), room.getCustomerName(), room.getCustomerPhone(), room.getFromDate(), room.getToDate(), "A"};
             tableModel.addRow(data2);
         }
 
@@ -223,6 +224,8 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
         if (actionKey.equals("Danh Sách Phòng")) {
             System.exit(0);
         }
+
+
 
 
 //
