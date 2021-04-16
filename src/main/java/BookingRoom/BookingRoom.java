@@ -38,6 +38,19 @@ public class BookingRoom extends RoomTemplate {
 
     @Override
     public void bookRoom() {
+
+//        if(room.getRoomType() == RoomType.CHEAP) {
+//            IRoom iRoom = new CheapIRoom();
+//            iRoom.book(room);
+//        } else if(room.getRoomType() == RoomType.NORMAL) {
+//            IRoom iRoom = new NormalIRoom();
+//            iRoom.book(room);
+//        } else  {
+//            IRoom iRoom = new CheapIRoom();
+//            iRoom.book(room);
+//        }
+
+
         RoomFactory roomFactory = new RoomFactory();
         IRoom iRoom = roomFactory.tryToBookRoom(room.getRoomType());
         if (room.getBook()) {

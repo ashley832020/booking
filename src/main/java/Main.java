@@ -21,20 +21,18 @@ public class Main extends JFrame implements ValidationMessage {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    User user = DBUtils.getUerById(1);
-                    if (user != null && user.getIsLogin() == 1) {
-                        BookingRoomController bookingRoomController = new BookingRoomController();
-                        bookingRoomController.MapLayout("Bong Hotel");
-                    } else {
-                        Main frame = new Main();
-                        frame.setVisible(true);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        EventQueue.invokeLater(() -> {
+            try {
+                User user = DBUtils.getUerById(1);
+                if (user != null && user.getIsLogin() == 1) {
+                    BookingRoomController bookingRoomController = new BookingRoomController();
+                    bookingRoomController.MapLayout("Bong Hotel");
+                } else {
+                    Main frame = new Main();
+                    frame.setVisible(true);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class DBUtils {
     private static Connection connection = null;
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/swing_demo";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/booking";
     static final String DB_USER = "root";
-    static final String DB_PASS = "root";
+    static final String DB_PASS = "123456";
 
     public static Connection getConnection() {
         if (connection == null) {

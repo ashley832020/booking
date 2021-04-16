@@ -228,8 +228,8 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             return;
         }
 
-        JFrame f = new JFrame();
-        JDialog d = new JDialog(f, "Payment", true);
+        JFrame frame = new JFrame();
+        JDialog d = new JDialog(frame, "Payment", true);
         d.setLayout(new FlowLayout());
         JButton card = new JButton("CARD");
         JButton cash = new JButton("CASH");
