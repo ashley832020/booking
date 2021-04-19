@@ -14,9 +14,4 @@ public class Utils {
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(phone).matches();
     }
-
-    public static Boolean isValidGirl(String name) {
-        return name.equals("Ashley");
-    }
-
 }

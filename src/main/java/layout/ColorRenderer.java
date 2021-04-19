@@ -11,7 +11,7 @@ public class ColorRenderer extends JLabel
         implements TableCellRenderer {
     Border unselectedBorder = null;
     Border selectedBorder = null;
-    boolean isBordered = true;
+    boolean isBordered;
 
     public ColorRenderer(boolean isBordered) {
         this.isBordered = isBordered;

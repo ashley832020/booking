@@ -1,8 +1,8 @@
-import BookingRoom.BookingRoom;
+import patterns.factory.BookingRoom;
 import Utils.ConstantsKey;
 import Utils.DBUtils;
 import payment.Payment;
-import validation.ValidationMessage;
+import patterns.ValidationMessage;
 import layout.ButtonColumn;
 import layout.ColorRenderer;
 import model.Room;
@@ -43,11 +43,14 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
     public void MapLayout(String title) {
         setTitle(title);
-        setLayout(new BorderLayout(5, 5));
+        getContentPane().setBackground(new java.awt.Color(135,206,250));
+        setLayout(new BorderLayout(30, 30));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         add(drawMenu(), BorderLayout.PAGE_START);
         add(drawLeftLayout(), BorderLayout.WEST);
         add(drawRightLayout(), BorderLayout.CENTER);
+
         setPreferredSize(new Dimension(1014, 597));
         pack();
         setVisible(true);
@@ -57,9 +60,13 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
 
         JPanel panel = new JPanel(new BorderLayout());
         JPanel panelTop = new JPanel(new GridLayout(8, 1, 5, 5));
+
+        panelTop.setBackground(new Color(25,25,112));
         JPanel panelBottom = new JPanel(new BorderLayout());
+
         JScrollPane scroll = new JScrollPane(lbWay = new JTextArea());
         scroll.setPreferredSize(panelTop.getPreferredSize());
+
         panelBottom.add(scroll);
 
         panel.add(panelTop, BorderLayout.PAGE_START);
@@ -75,16 +82,18 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         makeCalendarForm(panelTop);
         makeCalendarFormToDate(panelTop);
         panel.setBorder(new EmptyBorder(0, 5, 0, 0));
+
         return panel;
     }
 
     private JPanel drawRightLayout() {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(new TitledBorder(""));
-        mainPanel.setBackground(null);
+//        mainPanel.setBackground(new Color(64, 224, 208));
 
         rightPanel.setLayout(new BorderLayout());
         rightPanel.add(mainPanel, BorderLayout.WEST);
+        rightPanel.setBackground(Color.red);
 
         String col[] = {"A", "B", "C", "D", "E"};
         DefaultTableModel tableModel = new DefaultTableModel(col, 0);
@@ -240,7 +249,6 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             doBookRoom(room);
             Payment payment = new Payment();
             payment.payment(ConstantsKey.PAYMENT_CASH);
-
         });
 
         card.addActionListener(e -> {
@@ -251,7 +259,12 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
             payment.payment(ConstantsKey.PAYMENT_CARD);
         });
         d.add(new JLabel("Need To Pay"), BorderLayout.SOUTH);
-        d.add(new JLabel(payMoney(Integer.parseInt(room.getPrice())) + " $"), BorderLayout.SOUTH);
+        String price = payMoney(Integer.parseInt(room.getPrice()));
+        if (price.contains("-")) {
+            errorMessage("to date is smaller than from date");
+            return;
+        }
+        d.add(new JLabel(price + " $"), BorderLayout.SOUTH);
 //        d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
         d.add(card);
         d.add(cash);
@@ -304,7 +317,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         String actionKey = e.getActionCommand();
         if (actionKey.equals("Danh Sách Phòng")) {
             AllRoomController bookingRoomController = new AllRoomController();
-            bookingRoomController.MapLayout("Ahihi");
+            bookingRoomController.MapLayout("Booking Room");
         }
 
         if (actionKey.equals("Phòng Đã Đặt")) {
@@ -320,7 +333,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         if (actionKey.equals("Logout")) {
             DBUtils.logout();
             java.awt.Window win[] = java.awt.Window.getWindows();
-            for(int i=0;i<win.length;i++){
+            for (int i = 0; i < win.length; i++) {
                 win[i].dispose();
             }
             Main frame = new Main();

@@ -1,5 +1,5 @@
 import Utils.DBUtils;
-import validation.ValidationMessage;
+import patterns.ValidationMessage;
 import model.User;
 
 import javax.swing.*;
@@ -121,6 +121,6 @@ public class Main extends JFrame implements ValidationMessage {
     private void goToMainScreen() {
         dispose();
         BookingRoomController bookingRoomController = new BookingRoomController();
-        bookingRoomController.MapLayout("Ahihi");
+        bookingRoomController.MapLayout("Booking Room");
     }
 }

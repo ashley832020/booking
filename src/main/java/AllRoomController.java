@@ -1,7 +1,7 @@
 import Utils.DBUtils;
-import validation.ValidationMessage;
+import patterns.ValidationMessage;
 import model.Room;
-import BookingRoom.RoomType;
+import patterns.factory.RoomCarType;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -71,7 +71,7 @@ public class AllRoomController extends JFrame implements ValidationMessage, Acti
     private JPanel drawRightLayout() {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(new TitledBorder(""));
-        mainPanel.setBackground(null);
+        mainPanel.setBackground(new Color(64, 224, 208));
 
         rightPanel.setLayout(new BorderLayout());
         rightPanel.add(mainPanel, BorderLayout.WEST);
@@ -196,11 +196,11 @@ public class AllRoomController extends JFrame implements ValidationMessage, Acti
 
             int price = Integer.parseInt(cbPrice.getSelectedItem().toString());
             if (price <= 50) {
-                room.setRoomType(RoomType.CHEAP);
+                room.setRoomType(RoomCarType.CHEAP);
             } else if (price <= 150) {
-                room.setRoomType(RoomType.NORMAL);
+                room.setRoomType(RoomCarType.NORMAL);
             } else {
-                room.setRoomType(RoomType.EXPENSIVE);
+                room.setRoomType(RoomCarType.EXPENSIVE);
             }
 
             room.setRoomNumber(tfRoomName.getText());
@@ -211,7 +211,7 @@ public class AllRoomController extends JFrame implements ValidationMessage, Acti
                 errorMessage("Room Exist!");
             } else {
                 errorMessage("Successfully");
-                DBUtils.insertIntoDb(room);
+                DBUtils.insertRoomIntoDb(room);
                 rooms.add(room);
 //        remove(rightPanel);
                 rightPanel.removeAll();

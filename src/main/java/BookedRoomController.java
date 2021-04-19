@@ -1,11 +1,10 @@
-import BookingRoom.RoomType;
+import patterns.factory.RoomCarType;
 import Utils.ConstantsKey;
 import Utils.DBUtils;
 import layout.ButtonColumn;
 import layout.ColorRenderer;
 import model.Room;
-import payment.Payment;
-import validation.ValidationMessage;
+import patterns.ValidationMessage;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -74,7 +73,8 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
     private JPanel drawRightLayout() {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(new TitledBorder(""));
-        mainPanel.setBackground(null);
+//        mainPanel.setBackground(new Color(64, 224, 208, 1));
+        mainPanel.setBackground(Color.RED);
 
         rightPanel.setLayout(new BorderLayout());
         rightPanel.add(mainPanel, BorderLayout.WEST);
@@ -163,7 +163,7 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(new TitledBorder(title));
         panel.add(panelSmall);
-        cbCapacity = new JComboBox<String>(choices);
+        cbCapacity = new JComboBox<>(choices);
         cbCapacity.setMaximumSize(cbCapacity.getPreferredSize()); // added code
         cbCapacity.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
         //cb.setVisible(true); // Not needed
@@ -246,11 +246,11 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
             room.setBook(false);
             int price = Integer.parseInt(cbPrice.getSelectedItem().toString());
             if (price <= 50) {
-                room.setRoomType(RoomType.CHEAP);
+                room.setRoomType(RoomCarType.CHEAP);
             } else if (price <= 150) {
-                room.setRoomType(RoomType.NORMAL);
+                room.setRoomType(RoomCarType.NORMAL);
             } else {
-                room.setRoomType(RoomType.EXPENSIVE);
+                room.setRoomType(RoomCarType.EXPENSIVE);
             }
 
             room.setRoomNumber(tfRoomName.getText());
@@ -261,7 +261,7 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
                 errorMessage("Room Exist!");
             } else {
                 errorMessage("Successfully");
-                DBUtils.insertIntoDb(room);
+                DBUtils.insertRoomIntoDb(room);
                 rooms.add(room);
 //        remove(rightPanel);
                 rightPanel.removeAll();
@@ -291,5 +291,20 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
 
 
 }
+
+
+
+//<?xml version="1.0" encoding="UTF-8"?>
+//<project xmlns="http://maven.apache.org/POM/4.0.0"
+//        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+//        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+//<modelVersion>4.0.0</modelVersion>
+//
+//<groupId>tdtu</groupId>
+//<artifactId>tdtu</artifactId>
+//<version>1.0-SNAPSHOT</version>
+//
+//
+//</project>
 
 

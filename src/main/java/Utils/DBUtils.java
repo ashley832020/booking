@@ -1,8 +1,7 @@
 package Utils;
 
-import BookingRoom.RoomType;
-import model.Room;
-import model.User;
+import patterns.factory.RoomCarType;
+import model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class DBUtils {
         return false;
     }
 
-    public static void insertIntoDb(Room room) {
+    public static void insertRoomIntoDb(Room room) {
 
         String roomNumber = room.getRoomNumber();
         String price = room.getPrice();
@@ -70,6 +69,28 @@ public class DBUtils {
         String fromDate = room.getFromDate();
         String toDate = room.getToDate();
         String subQuery = "VALUES" + "(" + "'" + roomNumber + "'" + "," + "'" + price +
+                "'" + "," + "'" + capacity + "'" + "," + "'" + type + "'" + "," + "'" + fromDate + "'" + "," + "'" + toDate + "'" + ")";
+        try {
+
+            Statement st = connection.createStatement();
+            String query = "INSERT INTO room " + "(roomNumber,price,capacity,type,fromDate,toDate)" +
+                    subQuery;
+            Integer rs = st.executeUpdate(query);
+            st.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void insertCarIntoDb(Car car) {
+
+        String carNumber = car.getCarNumber();
+        String price = car.getPrice();
+        String capacity = car.getCapacity();
+        String type = car.getCarType().name();
+        String fromDate = car.getFromDate();
+        String toDate = car.getToDate();
+        String subQuery = "VALUES" + "(" + "'" + carNumber + "'" + "," + "'" + price +
                 "'" + "," + "'" + capacity + "'" + "," + "'" + type + "'" + "," + "'" + fromDate + "'" + "," + "'" + toDate + "'" + ")";
         try {
 
@@ -127,6 +148,37 @@ public class DBUtils {
             statement.setString(5, fromDate);
             statement.setString(6, toDate);
             statement.setString(7, roomNumber);
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("successfully!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateCarInformation(Car car) {
+        String customerName = car.getCustomerName();
+        String customerEmail = car.getCustomerEmail();
+        String customerPhone = car.getCustomerPhone();
+        String carNumber = car.getCarNumber();
+        String carStatus = car.getAvailable();
+        String fromDate = car.getFromDate();
+        String toDate = car.getToDate();
+
+        try {
+
+            String sql = "UPDATE room SET customerName=?, customerEmail=?, customerPhone=?, available=?, fromDate=?, toDate=? WHERE roomNumber=?";
+            PreparedStatement statement = getConnection().prepareStatement(sql);
+            statement.setString(1, customerName);
+            statement.setString(2, customerEmail);
+            statement.setString(3, customerPhone);
+            statement.setString(4, carStatus);
+            statement.setString(5, fromDate);
+            statement.setString(6, toDate);
+            statement.setString(7, carNumber);
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
@@ -230,18 +282,18 @@ public class DBUtils {
                 String type = rs.getString("type");
                 String fromDate = rs.getString("fromDate");
                 String toDate = rs.getString("toDate");
-                RoomType roomType = RoomType.CHEAP;
+                RoomCarType roomType = RoomCarType.CHEAP;
                 switch (type) {
                     case  "CHEAP" : {
-                        roomType = RoomType.CHEAP;
+                        roomType = RoomCarType.CHEAP;
                         break;
                     }
                     case  "NORMAL" : {
-                        roomType = RoomType.NORMAL;
+                        roomType = RoomCarType.NORMAL;
                         break;
                     }
                     case  "EXPENSIVE" : {
-                        roomType = RoomType.EXPENSIVE;
+                        roomType = RoomCarType.EXPENSIVE;
                         break;
                     }
                     default: break;
@@ -296,7 +348,7 @@ public class DBUtils {
                 String available = rs.getString("available");
                 String price = rs.getString("price");
                 Room room = new Room();
-                room.setRoomType(RoomType.EXPENSIVE);
+                room.setRoomType(RoomCarType.EXPENSIVE);
                 room.setCustomerName(customerName);
                 room.setCustomerEmail(customerEmail);
                 room.setCustomerPhone(customerPhone);

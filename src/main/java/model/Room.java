@@ -1,8 +1,6 @@
 package model;
 
-import BookingRoom.RoomType;
-
-import java.util.Date;
+import patterns.factory.RoomCarType;
 
 public class Room {
     private String customerName;
@@ -11,7 +9,7 @@ public class Room {
     private String roomName;
     private String roomNumber;
     private String price;
-    private RoomType roomType;
+    private RoomCarType roomType;
     private String capacity;
     private String available;
     private String fromDate;
@@ -107,11 +105,11 @@ public class Room {
         this.roomName = roomName;
     }
 
-    public RoomType getRoomType() {
+    public RoomCarType getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(RoomType roomType) {
+    public void setRoomType(RoomCarType roomType) {
         this.roomType = roomType;
     }
 
