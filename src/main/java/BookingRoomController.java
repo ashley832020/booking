@@ -1,4 +1,4 @@
-import patterns.factory.BookingRoom;
+import patterns.factory.*;
 import Utils.ConstantsKey;
 import Utils.DBUtils;
 import payment.Payment;
@@ -281,9 +281,9 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         room.setCustomerEmail(tfCustomerEmail.getText());
         room.setFromDate(modelFrom.getDay() + "/" + modelFrom.getMonth() + "/" + modelFrom.getYear());
         room.setToDate(modelTo.getDay() + "/" + modelTo.getMonth() + "/" + modelTo.getYear());
-        BookingRoom bookingRoom = new BookingRoom(room);
+        BookRoom bookingRoom = new BookRoom(room);
         bookingRoom.setErrorMessage(this);
-        bookingRoom.tryToBookRoom();
+        bookingRoom.tryToBook();
 
         rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
         refreshData();

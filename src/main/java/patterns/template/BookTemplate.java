@@ -2,20 +2,20 @@ package patterns.template;
 
 import patterns.ValidationMessage;
 
-public abstract class RoomTemplate {
+public abstract class BookTemplate {
 
     public abstract Boolean validEmail();
 
     public abstract Boolean validPhone();
 
-    public abstract Boolean checkExistRoom();
+    public abstract Boolean checkExist();
 
-    public abstract void bookRoom();
+    public abstract void book();
 
     public ValidationMessage errorMessage = null;
 
-    public final void tryToBookRoom() {
-        System.out.format("tryToBookRoom \n");
+    public final void tryToBook() {
+        System.out.format("tryToBook \n");
 
         if(!validPhone()) {
             System.out.format("Invalid Phone \n");
@@ -29,13 +29,12 @@ public abstract class RoomTemplate {
             return;
         }
 
-        if(!checkExistRoom()) {
+        if(!checkExist()) {
             errorMessage.errorMessage("Not Available");
-            System.out.format("Room Exist \n");
             return;
         }
 
-        bookRoom();
+        book();
     }
 
     public void setErrorMessage(ValidationMessage errorMessage) {

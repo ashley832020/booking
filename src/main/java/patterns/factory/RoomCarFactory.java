@@ -9,7 +9,7 @@ import patterns.strategy.roomAction.ExpensiveIRoom;
 import patterns.strategy.roomAction.IRoom;
 import patterns.strategy.roomAction.NormalIRoom;
 
-public class RoomFactory {
+public class RoomCarFactory {
 
     public IRoom tryToBookRoom(RoomCarType type) {
         if (type == null) return null;

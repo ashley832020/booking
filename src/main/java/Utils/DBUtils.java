@@ -60,6 +60,23 @@ public class DBUtils {
         return false;
     }
 
+    public static Boolean checkCarAvailableOrNot(String carNumber) {
+        try {
+            Connection connection = DBUtils.getConnection();
+            Statement st = connection.createStatement();
+            String query = "SELECT available FROM car WHERE roomNumber = " + "'" + carNumber + "'";
+            ResultSet rs = st.executeQuery(query);
+            if (rs.next()) {
+                String available = rs.getString("available");
+                return available.equals("Ready");
+            }
+        } catch (Exception e) {
+            System.out.format("Exception \n");
+        }
+
+        return false;
+    }
+
     public static void insertRoomIntoDb(Room room) {
 
         String roomNumber = room.getRoomNumber();
@@ -345,10 +362,27 @@ public class DBUtils {
                 String customerEmail = rs.getString("customerEmail");
                 String customerPhone = rs.getString("customerPhone");
                 String capacity = rs.getString("capacity");
+                String type = rs.getString("type");
                 String available = rs.getString("available");
                 String price = rs.getString("price");
+                RoomCarType roomType = RoomCarType.CHEAP;
+                switch (type) {
+                    case  "CHEAP" : {
+                        roomType = RoomCarType.CHEAP;
+                        break;
+                    }
+                    case  "NORMAL" : {
+                        roomType = RoomCarType.NORMAL;
+                        break;
+                    }
+                    case  "EXPENSIVE" : {
+                        roomType = RoomCarType.EXPENSIVE;
+                        break;
+                    }
+                    default: break;
+                }
                 Room room = new Room();
-                room.setRoomType(RoomCarType.EXPENSIVE);
+                room.setRoomType(roomType);
                 room.setCustomerName(customerName);
                 room.setCustomerEmail(customerEmail);
                 room.setCustomerPhone(customerPhone);

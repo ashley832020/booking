@@ -1,20 +1,20 @@
 package patterns.factory;
 
 import Utils.DBUtils;
-import model.Room;
-import patterns.strategy.roomAction.IRoom;
+import model.Car;
+import patterns.strategy.carAction.ICar;
 import patterns.strategy.validation.EmailValidate;
 import patterns.strategy.validation.PhoneValidate;
 import patterns.strategy.validation.ValidationStrategy;
-import patterns.template.RoomTemplate;
+import patterns.template.BookTemplate;
 
-public class BookingRoom extends RoomTemplate {
+public class BookCar extends BookTemplate {
 
-    private Room room = null;
+    private Car car = null;
     private ValidationStrategy validationStrategy;
 
-    public BookingRoom(Room room) {
-        this.room = room;
+    public BookCar(Car car) {
+        this.car = car;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class BookingRoom extends RoomTemplate {
         System.out.println("validEmail");
         this.validationStrategy = new EmailValidate();
 //        ValidationStrategy validationStrategy = new EmailValidate();
-        return validationStrategy.validate(room.getCustomerEmail());
+        return validationStrategy.validate(car.getCustomerEmail());
     }
 
     @Override
@@ -30,17 +30,17 @@ public class BookingRoom extends RoomTemplate {
         System.out.println("validPhone");
         this.validationStrategy = new PhoneValidate();
 //        ValidationStrategy validationStrategy = new PhoneValidate();
-        return validationStrategy.validate(room.getCustomerPhone());
+        return validationStrategy.validate(car.getCustomerPhone());
     }
 
     @Override
-    public Boolean checkExistRoom() {
-        System.out.println("checkExistRoom");
-        return DBUtils.checkRoomAvailableOrNot(room.getRoomNumber());
+    public Boolean checkExist() {
+        System.out.println("Check Exist Car");
+        return DBUtils.checkCarAvailableOrNot(car.getCarNumber());
     }
 
     @Override
-    public void bookRoom() {
+    public void book() {
 
 //        if(room.getRoomType() == RoomType.CHEAP) {
 //            IRoom iRoom = new CheapIRoom();
@@ -54,13 +54,13 @@ public class BookingRoom extends RoomTemplate {
 //        }
 
 
-        RoomFactory roomFactory = new RoomFactory();
-        IRoom iRoom = roomFactory.tryToBookRoom(room.getRoomType());
-        if (room.getBook()) {
-            errorMessage.successMessage("Successfully with " + room.getPaymentMethod() + " payment");
-            iRoom.book(room);
+        RoomCarFactory roomCarFactory = new RoomCarFactory();
+        ICar iCar = roomCarFactory.tryToBookCar(car.getCarType());
+        if (car.getBook()) {
+            errorMessage.successMessage("Successfully with " + car.getPaymentMethod() + " payment");
+            iCar.book(car);
         } else {
-            iRoom.insertRoom(room);
+            iCar.insertCar(car);
         }
     }
 }
