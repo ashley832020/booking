@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class DBUtils {
     private static Connection connection = null;
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/booking";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/swing_demo";
     static final String DB_USER = "root";
-    static final String DB_PASS = "123456";
+    static final String DB_PASS = "root";
 
     public static Connection getConnection() {
         if (connection == null) {
@@ -149,7 +149,7 @@ public class DBUtils {
         String carNumber = car.getCarNumber();
         try {
 
-            String sql = "UPDATE car SET customerName=?, customerEmail=?, customerPhone=?, available=?, fromDate=?, toDate=? WHERE roomNumber=?";
+            String sql = "UPDATE car SET customerName=?, customerEmail=?, customerPhone=?, available=?, fromDate=?, toDate=? WHERE carNumber=?";
             PreparedStatement statement = getConnection().prepareStatement(sql);
             statement.setString(1, "");
             statement.setString(2, "");
@@ -419,7 +419,7 @@ public class DBUtils {
             }
 
         } catch (Exception e) {
-            System.out.format("Exception \n");
+            System.out.format("Exception " + e.getMessage());
         }
         return cars;
     }

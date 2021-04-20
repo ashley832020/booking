@@ -5,9 +5,9 @@
  */
 
 /**
- *
  * @author macbookpro
  */
+
 import Utils.ConstantsKey;
 import Utils.DBUtils;
 import layout.ButtonColumn;
@@ -16,6 +16,7 @@ import model.*;
 import patterns.ValidationMessage;
 import patterns.factory.*;
 import payment.Payment;
+
 import java.time.temporal.ChronoUnit;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -41,7 +42,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
         bigBackGround = new JPanel();
-        cusomerInfomationPanel = new  JPanel();
+        cusomerInfomationPanel = new JPanel();
         tfPhone = new java.awt.TextField();
         tfName = new java.awt.TextField();
         tfEmail = new java.awt.TextField();
@@ -145,7 +146,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         labelCustomer.setText("customer");
 
         jComboBox1.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
-        jComboBox1.setModel(new DefaultComboBoxModel<>(new String[] { "All", "1", "2", "3" }));
+        jComboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"All", "1", "2", "3"}));
 
         labelToDay.setBackground(new Color(255, 255, 255));
         labelToDay.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
@@ -405,6 +406,12 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         });
         d.add(new JLabel("Need To Pay"), BorderLayout.SOUTH);
         String price = payMoney(Integer.parseInt(room.getPrice()));
+
+        if(price == null) {
+            errorMessage("Input Date time");
+            return;
+        }
+
         if (price.contains("-")) {
             errorMessage("to date is smaller than from date");
             return;
@@ -476,7 +483,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
             d.setVisible(false);
             DBUtils.checkoutRoom(room);
             availableRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_BUSY);
-            refreshData();
+            bookRoomRefreshData();
         });
         d.add(new JLabel("Do you wanna checkout?"), BorderLayout.SOUTH);
 //        d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
@@ -496,7 +503,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
             d.setVisible(false);
             DBUtils.checkoutCar(car);
             availableCars = DBUtils.getCarsBusyOrReady(false, ConstantsKey.CAR_STATUS_BUSY);
-            refreshData();
+            bookCarRefreshData();
         });
         d.add(new JLabel("Do you wanna checkout?"), BorderLayout.SOUTH);
 //        d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
@@ -506,14 +513,14 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         d.setVisible(true);
     }
 
-    private void drawRoomsTables(){
+    private void drawRoomsTables() {
         // ---------------------------------------------------------------------------------------------------
         String columns_available[] = {"Room", "Bed", "Type", "Price", "Book"};
         DefaultTableModel availableRoom = new DefaultTableModel(columns_available, 0);
         tableAvailableRooms.setModel(availableRoom);
 
         for (Room room : availableRooms) {
-            if (room.getAvailable().equals("Ready")){
+            if (room.getAvailable().equals("Ready")) {
                 Object[] data = {"R" + room.getRoomNumber(), room.getCapacity() + " bed", room.getRoomType(), room.getPrice() + "$", "Book"};
                 availableRoom.addRow(data);
             }
@@ -537,7 +544,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         DefaultTableModel bookedRoom = new DefaultTableModel(columns_booked, 0);
         tableBookedRooms.setModel(bookedRoom);
         for (Room room : bookedRooms) {
-            if (room.getAvailable().equals("Busy")){
+            if (room.getAvailable().equals("Busy")) {
                 Object[] data = {"R" + room.getRoomNumber(), room.getCapacity() + " bed", room.getRoomType(), room.getPrice() + "$", "Checkout"};
                 bookedRoom.addRow(data);
             }
@@ -557,14 +564,14 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
 
     }
 
-    private void drawCarsTables(){
+    private void drawCarsTables() {
         // ---------------------------------------------------------------------------------------------------
         String columns_available[] = {"Car", "Seat", "Type", "Price", "Book"};
         DefaultTableModel availableCar = new DefaultTableModel(columns_available, 0);
         tableAvailableCars.setModel(availableCar);
 
         for (Car car : availableCars) {
-            if (car.getAvailable().equals("Ready")){
+            if (car.getAvailable().equals("Ready")) {
                 Object[] data = {"C" + car.getCarNumber(), car.getCapacity() + " seats", car.getCarType(), car.getPrice() + "$", "Book"};
                 availableCar.addRow(data);
             }
@@ -588,7 +595,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         DefaultTableModel bookedCar = new DefaultTableModel(columns_booked, 0);
         tableBookedCars.setModel(bookedCar);
         for (Car car : bookedCars) {
-            if (car.getAvailable().equals("Busy")){
+            if (car.getAvailable().equals("Busy")) {
                 Object[] data = {"R" + car.getCarNumber(), car.getCapacity() + " seats", car.getCarType(), car.getPrice() + "$", "Checkout"};
                 bookedCar.addRow(data);
             }
@@ -624,8 +631,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         bookRoom.setErrorMessage(this);
         bookRoom.tryToBook();
 
-        availableRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
-        refreshData();
+        bookRoomRefreshData();
     }
 
     private void doBookCar(Car car) {
@@ -645,28 +651,44 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         bookCar.setErrorMessage(this);
         bookCar.tryToBook();
 
-        availableCars = DBUtils.getCarsBusyOrReady(false, ConstantsKey.CAR_STATUS_READY);
-        refreshData();
+        bookCarRefreshData();
     }
 
-    private void refreshData() {
+    private void bookRoomRefreshData() {
         availableRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
-        bookedRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_BUSY );
+        bookedRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_BUSY);
 
         tableBookedRooms.removeAll();
         tableAvailableRooms.removeAll();
         drawRoomsTables();
-        drawCarsTables();
         tableBookedRooms.revalidate();
         tableBookedRooms.repaint();
         tableAvailableRooms.revalidate();
         tableAvailableRooms.repaint();
+    }
 
+    private void bookCarRefreshData() {
+
+        availableCars = DBUtils.getCarsBusyOrReady(false, ConstantsKey.CAR_STATUS_READY);
+        bookedCars = DBUtils.getCarsBusyOrReady(false, ConstantsKey.CAR_STATUS_BUSY);
+
+        tableBookedCars.removeAll();
+        tableAvailableCars.removeAll();
+        drawCarsTables();
+        tableBookedCars.revalidate();
+        tableBookedCars.repaint();
+        tableAvailableCars.revalidate();
+        tableAvailableCars.repaint();
     }
 
     private String payMoney(Integer moneyPerDay) {
         java.time.LocalDate fromDate = datePickerFromDay.getDate();
         java.time.LocalDate toDate = datePickerToDay.getDate();
+
+        if(fromDate == null || toDate == null) {
+
+            return null;
+        }
 
         long diffInDays = ChronoUnit.DAYS.between(fromDate, toDate) + 1;
         return (diffInDays * moneyPerDay) + "";
@@ -679,12 +701,12 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
 
     @Override
     public void errorMessage(String errorMessage) {
-
+        JOptionPane.showMessageDialog(this, errorMessage);
     }
 
     @Override
     public void successMessage(String successMessage) {
-
+        JOptionPane.showMessageDialog(this, successMessage);
     }
     // End of variables declaration
 
