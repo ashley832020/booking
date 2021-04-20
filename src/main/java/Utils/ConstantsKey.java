@@ -5,6 +5,9 @@ public class ConstantsKey {
     public static final String ROOM_STATUS_BUSY = "Busy";
     public static final String ROOM_STATUS_READY = "Ready";
 
+    public static final String CAR_STATUS_BUSY = "Busy";
+    public static final String CAR_STATUS_READY = "Ready";
+
     public static final String PAYMENT_CASH = "cash";
     public static final String PAYMENT_CARD = "card";
 }

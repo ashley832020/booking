@@ -1,6 +1,6 @@
 package payment;
 
 public interface AdvancedPayment {
-    public void cash();
-    public void card();
+    void cash();
+    void card();
 }

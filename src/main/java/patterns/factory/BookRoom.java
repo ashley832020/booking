@@ -10,7 +10,7 @@ import patterns.template.BookTemplate;
 
 public class BookRoom extends BookTemplate {
 
-    private Room room = null;
+    private Room room;
     private ValidationStrategy validationStrategy;
 
     public BookRoom(Room room) {

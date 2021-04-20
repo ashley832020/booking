@@ -145,6 +145,30 @@ public class DBUtils {
         }
     }
 
+    public static void checkoutCar(Car car) {
+        String carNumber = car.getCarNumber();
+        try {
+
+            String sql = "UPDATE car SET customerName=?, customerEmail=?, customerPhone=?, available=?, fromDate=?, toDate=? WHERE roomNumber=?";
+            PreparedStatement statement = getConnection().prepareStatement(sql);
+            statement.setString(1, "");
+            statement.setString(2, "");
+            statement.setString(3, "");
+            statement.setString(4, "Ready");
+            statement.setString(5, "");
+            statement.setString(6, "");
+            statement.setString(7, carNumber);
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("successfully!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void updateRoomInformation(Room room) {
         String customerName = room.getCustomerName();
         String customerEmail = room.getCustomerEmail();
@@ -187,7 +211,7 @@ public class DBUtils {
 
         try {
 
-            String sql = "UPDATE room SET customerName=?, customerEmail=?, customerPhone=?, available=?, fromDate=?, toDate=? WHERE roomNumber=?";
+            String sql = "UPDATE car SET customerName=?, customerEmail=?, customerPhone=?, available=?, fromDate=?, toDate=? WHERE carNumber=?";
             PreparedStatement statement = getConnection().prepareStatement(sql);
             statement.setString(1, customerName);
             statement.setString(2, customerEmail);
@@ -334,6 +358,70 @@ public class DBUtils {
             System.out.format("Exception \n");
         }
         return rooms;
+    }
+
+    public static ArrayList<Car> getCarsBusyOrReady(Boolean isShowAll, String readyOrBusy) {
+
+        ArrayList cars = new ArrayList();
+        try {
+            Connection connection = DBUtils.getConnection();
+            Statement st = connection.createStatement();
+            String query;
+            if (isShowAll) {
+                query = "SELECT * FROM car";
+            } else {
+                query = "SELECT * FROM car where available =" + "'" + readyOrBusy + "'";
+            }
+
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+//                id, roomNumber, customerName, customerEmail, customerPhone
+                int id = rs.getInt("id");
+                String carNumber = rs.getString("carNumber");
+                String customerName = rs.getString("customerName");
+                String customerEmail = rs.getString("customerEmail");
+                String customerPhone = rs.getString("customerPhone");
+                String capacity = rs.getString("capacity");
+                String available = rs.getString("available");
+                String price = rs.getString("price");
+                String type = rs.getString("type");
+                String fromDate = rs.getString("fromDate");
+                String toDate = rs.getString("toDate");
+                RoomCarType carType = RoomCarType.CHEAP;
+                switch (type) {
+                    case  "CHEAP" : {
+                        carType = RoomCarType.CHEAP;
+                        break;
+                    }
+                    case  "NORMAL" : {
+                        carType = RoomCarType.NORMAL;
+                        break;
+                    }
+                    case  "EXPENSIVE" : {
+                        carType = RoomCarType.EXPENSIVE;
+                        break;
+                    }
+                    default: break;
+                }
+                Car car = new Car();
+                car.setCarType(carType);
+                car.setCustomerName(customerName);
+                car.setCustomerEmail(customerEmail);
+                car.setCustomerPhone(customerPhone);
+                car.setCarNumber(carNumber);
+                car.setPrice(price);
+                car.setCapacity(capacity);
+                car.setAvailable(available);
+                car.setFromDate(fromDate);
+                car.setToDate(toDate);
+
+                cars.add(car);
+            }
+
+        } catch (Exception e) {
+            System.out.format("Exception \n");
+        }
+        return cars;
     }
 
     public static ArrayList<Room> getRoomsWithCapacity(Boolean isShowAll, String key) {
