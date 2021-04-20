@@ -64,7 +64,7 @@ public class DBUtils {
         try {
             Connection connection = DBUtils.getConnection();
             Statement st = connection.createStatement();
-            String query = "SELECT available FROM car WHERE roomNumber = " + "'" + carNumber + "'";
+            String query = "SELECT available FROM car WHERE carNumber = " + "'" + carNumber + "'";
             ResultSet rs = st.executeQuery(query);
             if (rs.next()) {
                 String available = rs.getString("available");
