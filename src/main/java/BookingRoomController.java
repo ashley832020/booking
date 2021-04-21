@@ -282,7 +282,7 @@ public class BookingRoomController extends JFrame implements ValidationMessage, 
         room.setFromDate(modelFrom.getDay() + "/" + modelFrom.getMonth() + "/" + modelFrom.getYear());
         room.setToDate(modelTo.getDay() + "/" + modelTo.getMonth() + "/" + modelTo.getYear());
         BookRoom bookingRoom = new BookRoom(room);
-        bookingRoom.setErrorMessage(this);
+        bookingRoom.setMessage(this);
         bookingRoom.tryToBook();
 
         rooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);

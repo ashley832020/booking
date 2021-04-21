@@ -232,7 +232,7 @@ public class AllRoomController extends JFrame implements ValidationMessage, Acti
 
 //
 //        BookingRoom bookingRoom = new BookingRoom(rooms.get(0));
-//        bookingRoom.setErrorMessage(this);
+//        bookingRoom.setMessage(this);
 //        bookingRoom.tryToBook();
 
     }

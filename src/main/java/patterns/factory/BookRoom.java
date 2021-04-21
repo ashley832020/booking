@@ -57,7 +57,7 @@ public class BookRoom extends BookTemplate {
         RoomCarFactory roomCarFactory = new RoomCarFactory();
         IRoom iRoom = roomCarFactory.tryToBookRoom(room.getRoomType());
         if (room.getBook()) {
-            errorMessage.successMessage("Successfully with " + room.getPaymentMethod() + " payment");
+            message.successMessage("Successfully with " + room.getPaymentMethod() + " payment");
             iRoom.book(room);
         } else {
             iRoom.insertRoom(room);

@@ -12,32 +12,32 @@ public abstract class BookTemplate {
 
     public abstract void book();
 
-    public ValidationMessage errorMessage = null;
+    public ValidationMessage message = null;
 
     public final void tryToBook() {
         System.out.format("tryToBook \n");
 
         if(!validPhone()) {
             System.out.format("Invalid Phone \n");
-            errorMessage.errorMessage("Invalid Phone");
+            message.errorMessage("Invalid Phone");
             return;
         }
 
         if(!validEmail()) {
             System.out.format("Invalid Email \n");
-            errorMessage.errorMessage("Invalid Email");
+            message.errorMessage("Invalid Email");
             return;
         }
 
         if(!checkExist()) {
-            errorMessage.errorMessage("Not Available");
+            message.errorMessage("Not Available");
             return;
         }
 
         book();
     }
 
-    public void setErrorMessage(ValidationMessage errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setMessage(ValidationMessage message) {
+        this.message = message;
     }
 }

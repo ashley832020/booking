@@ -284,7 +284,7 @@ public class BookedRoomController extends JFrame implements ValidationMessage, A
 
 //
 //        BookingRoom bookingRoom = new BookingRoom(rooms.get(0));
-//        bookingRoom.setErrorMessage(this);
+//        bookingRoom.setMessage(this);
 //        bookingRoom.tryToBook();
 
     }

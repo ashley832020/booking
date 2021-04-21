@@ -41,8 +41,9 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
+
         bigBackGround = new JPanel();
-        cusomerInfomationPanel = new JPanel();
+        cusomerInfomationPanel = new  JPanel();
         tfPhone = new java.awt.TextField();
         tfName = new java.awt.TextField();
         tfEmail = new java.awt.TextField();
@@ -73,6 +74,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         labelBookedCars = new JLabel();
         jScrollPane6 = new JScrollPane();
         tableBookedCars = new JTable();
+        cbxLanguage = new JComboBox<>();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBackground(new Color(255, 255, 255));
@@ -133,12 +135,8 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         btnBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBookActionPerformed(evt);
-//                BookRoom
             }
         });
-
-        drawRoomsTables();
-        drawCarsTables();
 
         labelCustomer.setBackground(new Color(255, 255, 255));
         labelCustomer.setFont(new Font("UTM Ericsson Capital", 0, 24)); // NOI18N
@@ -146,7 +144,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         labelCustomer.setText("customer");
 
         jComboBox1.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
-        jComboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"All", "1", "2", "3"}));
+        jComboBox1.setModel(new DefaultComboBoxModel<>(new String[] { "All", "1", "2", "3" }));
 
         labelToDay.setBackground(new Color(255, 255, 255));
         labelToDay.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
@@ -236,13 +234,15 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         labelAvailableRooms.setBackground(new Color(255, 255, 255));
         labelAvailableRooms.setFont(new Font("UTM Ericsson Capital", 0, 24)); // NOI18N
         labelAvailableRooms.setForeground(new Color(153, 153, 255));
-        labelAvailableRooms.setText("available Rooms");
+        labelAvailableRooms.setText("available rooms");
+
         jScrollPane2.setViewportView(tableAvailableRooms);
 
         labelBookedRooms.setBackground(new Color(255, 255, 255));
         labelBookedRooms.setFont(new Font("UTM Ericsson Capital", 0, 24)); // NOI18N
         labelBookedRooms.setForeground(new Color(153, 153, 255));
-        labelBookedRooms.setText("Booked Rooms");
+        labelBookedRooms.setText("Booked rooms");
+
         jScrollPane1.setViewportView(tableBookedRooms);
 
         GroupLayout tabRoomLayout = new GroupLayout(tabRoom);
@@ -285,12 +285,14 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         labelAvailableCars.setFont(new Font("UTM Ericsson Capital", 0, 24)); // NOI18N
         labelAvailableCars.setForeground(new Color(153, 153, 255));
         labelAvailableCars.setText("available cars");
+
         jScrollPane5.setViewportView(tableAvailableCars);
 
         labelBookedCars.setBackground(new Color(255, 255, 255));
         labelBookedCars.setFont(new Font("UTM Ericsson Capital", 0, 24)); // NOI18N
         labelBookedCars.setForeground(new Color(153, 153, 255));
         labelBookedCars.setText("Booked cars");
+
         jScrollPane6.setViewportView(tableBookedCars);
 
         GroupLayout tabCarLayout = new GroupLayout(tabCar);
@@ -327,27 +329,38 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
 
         tabTable.addTab("Car", tabCar);
 
+        cbxLanguage.setFont(new Font("UTM Ericsson Capital", 0, 12)); // NOI18N
+        cbxLanguage.setForeground(new Color(102, 102, 255));
+        cbxLanguage.setModel(new DefaultComboBoxModel<>(new String[] { "Vietnamese", "English" }));
+
         GroupLayout bigBackGroundLayout = new GroupLayout(bigBackGround);
         bigBackGround.setLayout(bigBackGroundLayout);
         bigBackGroundLayout.setHorizontalGroup(
                 bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(bigBackGroundLayout.createSequentialGroup()
-                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labelTitle, GroupLayout.PREFERRED_SIZE, 333, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(GroupLayout.Alignment.TRAILING, bigBackGroundLayout.createSequentialGroup()
-                                .addContainerGap(33, Short.MAX_VALUE)
+                                .addContainerGap(53, Short.MAX_VALUE)
                                 .addComponent(cusomerInfomationPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29)
                                 .addComponent(tabTable, GroupLayout.PREFERRED_SIZE, 607, GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29))
+                        .addGroup(GroupLayout.Alignment.TRAILING, bigBackGroundLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(cbxLanguage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addGap(207, 207, 207)
+                                .addComponent(labelTitle, GroupLayout.PREFERRED_SIZE, 333, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         bigBackGroundLayout.setVerticalGroup(
                 bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(bigBackGroundLayout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addComponent(labelTitle)
-                                .addGap(27, 27, 27)
+                                .addGroup(bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addGroup(bigBackGroundLayout.createSequentialGroup()
+                                                .addGap(19, 19, 19)
+                                                .addComponent(labelTitle))
+                                        .addGroup(bigBackGroundLayout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(cbxLanguage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                                         .addComponent(tabTable, GroupLayout.PREFERRED_SIZE, 510, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(cusomerInfomationPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -358,7 +371,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(bigBackGround, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(bigBackGround, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -366,23 +379,12 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
                                 .addComponent(bigBackGround, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
         );
-
+        drawRoomsTables();
+        drawCarsTables();
         pack();
-    }
-    // </editor-fold>
+    }// </editor-fold>
 
     private void roomDetailDialog(Room room) {
-
-//        if (modelFrom.getValue() == null) {
-//            errorMessage("Input from Date");
-//            return;
-//        }
-//
-//        if (modelTo.getValue() == null) {
-//            errorMessage("Input to Date");
-//            return;
-//        }
-
         JFrame frame = new JFrame();
         JDialog d = new JDialog(frame, "Payment", true);
         d.setLayout(new FlowLayout());
@@ -407,15 +409,20 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         d.add(new JLabel("Need To Pay"), BorderLayout.SOUTH);
         String price = payMoney(Integer.parseInt(room.getPrice()));
 
-        if(price == null) {
-            errorMessage("Input Date time");
+        if (price == null) {
+            errorMessage("Input date time!");
             return;
         }
 
+        if (price.equals("0")) {
+            errorMessage("Length of days living must be greater than 1 day!");
+        }
+
         if (price.contains("-")) {
-            errorMessage("to date is smaller than from date");
+            errorMessage("TO DATE is smaller than FROM DATE!");
             return;
         }
+
         d.add(new JLabel(price + " $"), BorderLayout.SOUTH);
 //        d.add(new JLabel(room.getCustomerPhone()), BorderLayout.SOUTH);
         d.add(card);
@@ -428,12 +435,12 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
     private void carDetailDialog(Car car) {
 
 //        if (modelFrom.getValue() == null) {
-//            errorMessage("Input from Date");
+//            message("Input from Date");
 //            return;
 //        }
 //
 //        if (modelTo.getValue() == null) {
-//            errorMessage("Input to Date");
+//            message("Input to Date");
 //            return;
 //        }
 
@@ -460,8 +467,18 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         });
         d.add(new JLabel("Need To Pay"), BorderLayout.SOUTH);
         String price = payMoney(Integer.parseInt(car.getPrice()));
+
+        if (price == null) {
+            errorMessage("Input date time!");
+            return;
+        }
+
+        if (price.equals("0")) {
+            errorMessage("Length of days living must be greater than 1 day!");
+        }
+
         if (price.contains("-")) {
-            errorMessage("to date is smaller than from date");
+            errorMessage("TO DATE is smaller than FROM DATE!");
             return;
         }
         d.add(new JLabel(price + " $"), BorderLayout.SOUTH);
@@ -628,7 +645,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         room.setFromDate(from[2] + "/" + from[1] + "/" + from[0]);
         room.setToDate(to[2] + "/" + to[1] + "/" + to[0]);
         BookRoom bookRoom = new BookRoom(room);
-        bookRoom.setErrorMessage(this);
+        bookRoom.setMessage(this);
         bookRoom.tryToBook();
 
         bookRoomRefreshData();
@@ -648,7 +665,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         car.setFromDate(from[2] + "/" + from[1] + "/" + from[0]);
         car.setToDate(to[2] + "/" + to[1] + "/" + to[0]);
         BookCar bookCar = new BookCar(car);
-        bookCar.setErrorMessage(this);
+        bookCar.setMessage(this);
         bookCar.tryToBook();
 
         bookCarRefreshData();
@@ -690,7 +707,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
             return null;
         }
 
-        long diffInDays = ChronoUnit.DAYS.between(fromDate, toDate) + 1;
+        long diffInDays = ChronoUnit.DAYS.between(fromDate, toDate);
         return (diffInDays * moneyPerDay) + "";
     }
 
@@ -792,4 +809,5 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
     private java.awt.TextField tfEmail;
     private java.awt.TextField tfName;
     private java.awt.TextField tfPhone;
+    private JComboBox<String> cbxLanguage;
 }
