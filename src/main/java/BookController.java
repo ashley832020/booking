@@ -9,11 +9,15 @@
  */
 
 import Utils.ConstantsKey;
+import Utils.DBTitle;
 import Utils.DBUtils;
 import layout.ButtonColumn;
 import layout.ColorRenderer;
 import model.*;
 import patterns.ValidationMessage;
+import patterns.adapter.EnglishAdaptee;
+import patterns.adapter.TranslatorAdapter;
+import patterns.adapter.VietnameseTarget;
 import patterns.factory.*;
 import payment.Payment;
 
@@ -26,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BookController extends JFrame implements ValidationMessage, ActionListener {
     private ArrayList<Room> availableRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
@@ -33,6 +38,8 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
 
     private ArrayList<Car> availableCars = DBUtils.getCarsBusyOrReady(false, ConstantsKey.CAR_STATUS_READY);
     private ArrayList<Car> bookedCars = DBUtils.getCarsBusyOrReady(false, ConstantsKey.CAR_STATUS_BUSY);
+
+    private ArrayList<String> titleData = DBTitle.titleMultipleLanguage;
 
     public BookController() {
         initComponents();
@@ -43,7 +50,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
     private void initComponents() {
 
         bigBackGround = new JPanel();
-        cusomerInfomationPanel = new  JPanel();
+        cusomerInfomationPanel = new JPanel();
         tfPhone = new java.awt.TextField();
         tfName = new java.awt.TextField();
         tfEmail = new java.awt.TextField();
@@ -76,6 +83,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         tableBookedCars = new JTable();
         cbxLanguage = new JComboBox<>();
 
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBackground(new Color(255, 255, 255));
 
@@ -101,33 +109,39 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
             }
         });
 
+        cbxLanguage.addActionListener(e -> {
+            VietnameseTarget client = new TranslatorAdapter(new EnglishAdaptee());
+            client.send(Objects.requireNonNull(cbxLanguage.getSelectedItem()).toString());
+            setTitleMultipleLang();
+        });
+
         labelName.setBackground(new Color(255, 255, 255));
-        labelName.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelName.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
         labelName.setForeground(new Color(255, 255, 255));
         labelName.setText("name");
 
         labelPhone.setBackground(new Color(255, 255, 255));
-        labelPhone.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelPhone.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
         labelPhone.setForeground(new Color(255, 255, 255));
         labelPhone.setText("phone");
 
         labelEmail.setBackground(new Color(255, 255, 255));
-        labelEmail.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelEmail.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
         labelEmail.setForeground(new Color(255, 255, 255));
         labelEmail.setText("email");
 
         labelBed.setBackground(new Color(255, 255, 255));
-        labelBed.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelBed.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
         labelBed.setForeground(new Color(255, 255, 255));
         labelBed.setText("BED");
 
         labelFromDay.setBackground(new Color(255, 255, 255));
-        labelFromDay.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelFromDay.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
         labelFromDay.setForeground(new Color(255, 255, 255));
         labelFromDay.setText("from");
 
         btnBook.setBackground(new Color(255, 255, 255));
-        btnBook.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        btnBook.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
         btnBook.setForeground(new Color(102, 102, 255));
         btnBook.setText("book");
         btnBook.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
@@ -144,7 +158,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         labelCustomer.setText("customer");
 
         jComboBox1.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
-        jComboBox1.setModel(new DefaultComboBoxModel<>(new String[] { "All", "1", "2", "3" }));
+        jComboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"All", "1", "2", "3"}));
 
         labelToDay.setBackground(new Color(255, 255, 255));
         labelToDay.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
@@ -331,7 +345,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
 
         cbxLanguage.setFont(new Font("UTM Ericsson Capital", 0, 12)); // NOI18N
         cbxLanguage.setForeground(new Color(102, 102, 255));
-        cbxLanguage.setModel(new DefaultComboBoxModel<>(new String[] { "Vietnamese", "English" }));
+        cbxLanguage.setModel(new DefaultComboBoxModel<>(new String[]{"English", "Vietnamese"}));
 
         GroupLayout bigBackGroundLayout = new GroupLayout(bigBackGround);
         bigBackGround.setLayout(bigBackGroundLayout);
@@ -382,6 +396,8 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         drawRoomsTables();
         drawCarsTables();
         pack();
+
+
     }// </editor-fold>
 
     private void roomDetailDialog(Room room) {
@@ -702,7 +718,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         java.time.LocalDate fromDate = datePickerFromDay.getDate();
         java.time.LocalDate toDate = datePickerToDay.getDate();
 
-        if(fromDate == null || toDate == null) {
+        if (fromDate == null || toDate == null) {
 
             return null;
         }
@@ -711,9 +727,21 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         return (diffInDays * moneyPerDay) + "";
     }
 
+    public void setTitleMultipleLang() {
+        titleData = DBTitle.titleMultipleLanguage;
+        labelName.setText(titleData.get(0));
+        labelPhone.setText(titleData.get(1));
+        labelEmail.setText(titleData.get(2));
+        labelFromDay.setText(titleData.get(3));
+        labelToDay.setText(titleData.get(4));
+        labelCustomer.setText(titleData.get(5));
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        VietnameseTarget client = new TranslatorAdapter(new EnglishAdaptee());
+        client.send("vn");
+        setTitleMultipleLang();
     }
 
     @Override
