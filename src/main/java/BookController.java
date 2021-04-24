@@ -19,6 +19,9 @@ import patterns.adapter.LanguageAdaptee;
 import patterns.adapter.TranslatorAdapter;
 import patterns.adapter.LanguageTarget;
 import patterns.factory.*;
+import patterns.filter.Capacity;
+import patterns.filter.CapacityOne;
+import patterns.filter.CapacityTwo;
 import payment.Payment;
 
 import java.time.temporal.ChronoUnit;
@@ -30,6 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class BookController extends JFrame implements ValidationMessage, ActionListener {
@@ -158,7 +162,27 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         labelCustomer.setText("customer");
 
         jComboBox1.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
-        jComboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"All", "1", "2", "3"}));
+        jComboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"All", "1", "2"}));
+        jComboBox1.addActionListener(e -> {
+            String selected = Objects.requireNonNull(jComboBox1.getSelectedItem()).toString();
+            availableRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
+            if(selected.equals("1")) {
+                Capacity capacity = new CapacityOne();
+                List<Room> rooms = capacity.roomCapacity(availableRooms);
+                availableRooms.clear();
+                availableRooms.addAll(rooms);
+                bookRoomRefreshDataFilter();
+
+            } else if (selected.equals("2")) {
+                Capacity capacity = new CapacityTwo();
+                List<Room> rooms = capacity.roomCapacity(availableRooms);
+                availableRooms.clear();
+                availableRooms.addAll(rooms);
+                bookRoomRefreshDataFilter();
+            } else  {
+                bookRoomRefreshData();
+            }
+        });
 
         labelToDay.setBackground(new Color(255, 255, 255));
         labelToDay.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
@@ -690,6 +714,17 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
     private void bookRoomRefreshData() {
         availableRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
         bookedRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_BUSY);
+
+        tableBookedRooms.removeAll();
+        tableAvailableRooms.removeAll();
+        drawRoomsTables();
+        tableBookedRooms.revalidate();
+        tableBookedRooms.repaint();
+        tableAvailableRooms.revalidate();
+        tableAvailableRooms.repaint();
+    }
+
+    private void bookRoomRefreshDataFilter() {
 
         tableBookedRooms.removeAll();
         tableAvailableRooms.removeAll();
