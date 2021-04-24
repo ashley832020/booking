@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class DBTitle {
 
     public static ArrayList<String> titleMultipleLanguage = null;
+    public static ArrayList<String> titleMultipleLanguageReceive = new ArrayList<>();
 
     public static void setDataLanguage(String language){
         if (language.equals("Vietnamese")) {
@@ -14,7 +15,7 @@ public class DBTitle {
         }
     }
 
-    public static void setDataEnglish() {
+    private static void setDataEnglish() {
         titleMultipleLanguage = new ArrayList<>();
         titleMultipleLanguage.add("Name");
         titleMultipleLanguage.add("Phone");
@@ -24,10 +25,10 @@ public class DBTitle {
         titleMultipleLanguage.add("Customer");
     }
 
-    public static void setDataVietnamese() {
+    private static void setDataVietnamese() {
         titleMultipleLanguage = new ArrayList<>();
         titleMultipleLanguage.add("Tên");
-        titleMultipleLanguage.add("Số điện thoai");
+        titleMultipleLanguage.add("SĐT");
         titleMultipleLanguage.add("Hòm thư");
         titleMultipleLanguage.add("Từ ngày");
         titleMultipleLanguage.add("Đến ngày");

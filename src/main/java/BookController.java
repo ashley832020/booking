@@ -15,9 +15,9 @@ import layout.ButtonColumn;
 import layout.ColorRenderer;
 import model.*;
 import patterns.ValidationMessage;
-import patterns.adapter.EnglishAdaptee;
+import patterns.adapter.LanguageAdaptee;
 import patterns.adapter.TranslatorAdapter;
-import patterns.adapter.VietnameseTarget;
+import patterns.adapter.LanguageTarget;
 import patterns.factory.*;
 import payment.Payment;
 
@@ -110,8 +110,8 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         });
 
         cbxLanguage.addActionListener(e -> {
-            VietnameseTarget client = new TranslatorAdapter(new EnglishAdaptee());
-            client.send(Objects.requireNonNull(cbxLanguage.getSelectedItem()).toString());
+            LanguageTarget client = new TranslatorAdapter(new LanguageAdaptee());
+            client.translate(Objects.requireNonNull(cbxLanguage.getSelectedItem()).toString());
             setTitleMultipleLang();
         });
 
@@ -161,7 +161,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         jComboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"All", "1", "2", "3"}));
 
         labelToDay.setBackground(new Color(255, 255, 255));
-        labelToDay.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelToDay.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
         labelToDay.setForeground(new Color(255, 255, 255));
         labelToDay.setText("to");
 
@@ -737,11 +737,8 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         labelCustomer.setText(titleData.get(5));
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
-        VietnameseTarget client = new TranslatorAdapter(new EnglishAdaptee());
-        client.send("vn");
-        setTitleMultipleLang();
+
     }
 
     @Override
@@ -839,3 +836,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
     private java.awt.TextField tfPhone;
     private JComboBox<String> cbxLanguage;
 }
+
+
+
+// A -- B -- C

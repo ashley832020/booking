@@ -1,19 +1,17 @@
 package patterns.adapter;
 
-public class TranslatorAdapter implements VietnameseTarget  {
+import Utils.DBTitle;
 
-    private EnglishAdaptee adaptee;
-    public TranslatorAdapter(EnglishAdaptee adaptee) {
+public class TranslatorAdapter implements LanguageTarget {
+
+    private LanguageAdaptee adaptee;
+    public TranslatorAdapter(LanguageAdaptee adaptee) {
         this.adaptee = adaptee;
     }
 
     @Override
-    public void send(String words) {
-        String language = this.translate(words);
-        adaptee.receive(language);
-    }
-
-    private String translate(String language) {
-        return language;
+    public void translate(String language) {
+        DBTitle.setDataLanguage(language); // already translated
+        adaptee.receiveLanguage(DBTitle.titleMultipleLanguage);
     }
 }
