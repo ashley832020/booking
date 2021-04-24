@@ -8,7 +8,7 @@ public class CapacityOne implements Capacity {
 
     @Override
     public List<Room> roomCapacity(List<Room> rooms) {
-        List<Room> roomCapacityOne = new ArrayList<Room>();
+        List<Room> roomCapacityOne = new ArrayList<>();
 
         for (Room room : rooms) {
             if(room.getCapacity().equalsIgnoreCase("1")){

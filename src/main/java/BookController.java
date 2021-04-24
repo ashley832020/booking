@@ -539,7 +539,6 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         checkout.addActionListener(e -> {
             d.setVisible(false);
             DBUtils.checkoutRoom(room);
-            availableRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_BUSY);
             bookRoomRefreshData();
         });
         d.add(new JLabel("Do you wanna checkout?"), BorderLayout.SOUTH);
