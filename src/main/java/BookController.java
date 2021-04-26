@@ -26,7 +26,6 @@ import payment.Payment;
 
 import java.time.temporal.ChronoUnit;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -49,12 +48,389 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         initComponents();
     }
 
+//    @SuppressWarnings("unchecked")
+//    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+//    private void initComponents() {
+//
+//        bigBackGround = new JPanel();
+//        cusomerInfomationPanel = new JPanel();
+//        tfPhone = new java.awt.TextField();
+//        tfName = new java.awt.TextField();
+//        tfEmail = new java.awt.TextField();
+//        labelName = new JLabel();
+//        labelPhone = new JLabel();
+//        labelEmail = new JLabel();
+//        labelBed = new JLabel();
+//        labelFromDay = new JLabel();
+//        btnBook = new JButton();
+//        labelCustomer = new JLabel();
+//        cbxRoomCapacity = new JComboBox<>();
+//        datePickerFromDay = new com.github.lgooddatepicker.components.DatePicker();
+//        labelToDay = new JLabel();
+//        datePickerToDay = new com.github.lgooddatepicker.components.DatePicker();
+//        labelTitle = new JLabel();
+//        tabTable = new JTabbedPane();
+//        tabRoom = new JPanel();
+//        labelAvailableRooms = new JLabel();
+//        jScrollPane2 = new JScrollPane();
+//        tableAvailableRooms = new JTable();
+//        labelBookedRooms = new JLabel();
+//        jScrollPane1 = new JScrollPane();
+//        tableBookedRooms = new JTable();
+//        tabCar = new JPanel();
+//        labelAvailableCars = new JLabel();
+//        jScrollPane5 = new JScrollPane();
+//        tableAvailableCars = new JTable();
+//        labelBookedCars = new JLabel();
+//        jScrollPane6 = new JScrollPane();
+//        tableBookedCars = new JTable();
+//        cbxLanguage = new JComboBox<>();
+//
+//
+//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        setBackground(new Color(255, 255, 255));
+//
+//        bigBackGround.setBackground(new Color(140, 153, 220));
+//
+//        cusomerInfomationPanel.setBackground(new Color(50, 59, 100));
+//
+//        tfPhone.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                tfPhoneActionPerformed(evt);
+//            }
+//        });
+//
+//        tfName.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                tfNameActionPerformed(evt);
+//            }
+//        });
+//
+//        tfEmail.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                tfEmailActionPerformed(evt);
+//            }
+//        });
+//
+//        cbxLanguage.addActionListener(e -> {
+//            LanguageTarget client = new TranslatorAdapter(new LanguageAdaptee());
+//            client.translate(Objects.requireNonNull(cbxLanguage.getSelectedItem()).toString());
+//            setTitleMultipleLang();
+//        });
+//
+//        labelName.setBackground(new Color(255, 255, 255));
+//        labelName.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
+//        labelName.setForeground(new Color(255, 255, 255));
+//        labelName.setText("name");
+//
+//        labelPhone.setBackground(new Color(255, 255, 255));
+//        labelPhone.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
+//        labelPhone.setForeground(new Color(255, 255, 255));
+//        labelPhone.setText("phone");
+//
+//        labelEmail.setBackground(new Color(255, 255, 255));
+//        labelEmail.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
+//        labelEmail.setForeground(new Color(255, 255, 255));
+//        labelEmail.setText("email");
+//
+//        labelBed.setBackground(new Color(255, 255, 255));
+//        labelBed.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
+//        labelBed.setForeground(new Color(255, 255, 255));
+//        labelBed.setText("BED");
+//
+//        labelFromDay.setBackground(new Color(255, 255, 255));
+//        labelFromDay.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
+//        labelFromDay.setForeground(new Color(255, 255, 255));
+//        labelFromDay.setText("from");
+//
+//        btnBook.setBackground(new Color(255, 255, 255));
+//        btnBook.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
+//        btnBook.setForeground(new Color(102, 102, 255));
+//        btnBook.setText("book");
+//        btnBook.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
+//        btnBook.setBorderPainted(false);
+//        btnBook.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                btnBookActionPerformed(evt);
+//            }
+//        });
+//
+//        labelCustomer.setBackground(new Color(255, 255, 255));
+//        labelCustomer.setFont(new Font("UTM Ericsson Capital", 0, 24)); // NOI18N
+//        labelCustomer.setForeground(new Color(153, 153, 255));
+//        labelCustomer.setText("customer");
+//
+//        cbxRoomCapacity.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+//        cbxRoomCapacity.setModel(new DefaultComboBoxModel<>(new String[]{"All", "1", "2"}));
+//        cbxRoomCapacity.addActionListener(e -> {
+//            String selected = Objects.requireNonNull(cbxRoomCapacity.getSelectedItem()).toString();
+//            availableRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
+//            if(selected.equals("1")) {
+//                Capacity capacity = new CapacityOne();
+//                List<Room> rooms = capacity.roomCapacity(availableRooms);
+//                availableRooms.clear();
+//                availableRooms.addAll(rooms);
+//                bookRoomRefreshDataFilter();
+//
+//            } else if (selected.equals("2")) {
+//                Capacity capacity = new CapacityTwo();
+//                List<Room> rooms = capacity.roomCapacity(availableRooms);
+//                availableRooms.clear();
+//                availableRooms.addAll(rooms);
+//                bookRoomRefreshDataFilter();
+//            } else  {
+//                bookRoomRefreshData();
+//            }
+//        });
+//
+//        labelToDay.setBackground(new Color(255, 255, 255));
+//        labelToDay.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
+//        labelToDay.setForeground(new Color(255, 255, 255));
+//        labelToDay.setText("to");
+//
+//        GroupLayout cusomerInfomationPanelLayout = new GroupLayout(cusomerInfomationPanel);
+//        cusomerInfomationPanel.setLayout(cusomerInfomationPanelLayout);
+//        cusomerInfomationPanelLayout.setHorizontalGroup(
+//                cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(cusomerInfomationPanelLayout.createSequentialGroup()
+//                                .addGap(117, 117, 117)
+//                                .addComponent(btnBook, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(0, 0, Short.MAX_VALUE))
+//                        .addGroup(GroupLayout.Alignment.TRAILING, cusomerInfomationPanelLayout.createSequentialGroup()
+//                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                                .addComponent(labelCustomer)
+//                                .addGap(108, 108, 108))
+//                        .addGroup(cusomerInfomationPanelLayout.createSequentialGroup()
+//                                .addGap(23, 23, 23)
+//                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                        .addComponent(labelPhone, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+//                                        .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+//                                                .addComponent(labelToDay, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+//                                                .addComponent(labelFromDay, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE))
+//                                        .addGroup(cusomerInfomationPanelLayout.createSequentialGroup()
+//                                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+//                                                        .addComponent(labelName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                                                        .addComponent(labelEmail, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                                                        .addComponent(labelBed, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE))
+//                                                .addGap(23, 23, 23)
+//                                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+//                                                        .addComponent(tfPhone, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                                                        .addComponent(tfName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                                                        .addComponent(tfEmail, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                                                        .addComponent(datePickerFromDay, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
+//                                                        .addComponent(datePickerToDay, GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+//                                                        .addComponent(cbxRoomCapacity, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+//                                .addGap(25, 25, 25))
+//        );
+//        cusomerInfomationPanelLayout.setVerticalGroup(
+//                cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(GroupLayout.Alignment.TRAILING, cusomerInfomationPanelLayout.createSequentialGroup()
+//                                .addGap(17, 17, 17)
+//                                .addComponent(labelCustomer)
+//                                .addGap(39, 39, 39)
+//                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                        .addComponent(labelName, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+//                                        .addComponent(tfName, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+//                                .addGap(18, 18, 18)
+//                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+//                                        .addComponent(labelPhone, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+//                                        .addComponent(tfPhone, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+//                                .addGap(20, 20, 20)
+//                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                        .addComponent(tfEmail, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+//                                        .addComponent(labelEmail, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+//                                .addGap(18, 18, 18)
+//                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+//                                        .addComponent(datePickerFromDay, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                        .addComponent(labelFromDay, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+//                                .addGap(18, 18, 18)
+//                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+//                                        .addComponent(labelToDay, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+//                                        .addComponent(datePickerToDay, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+//                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+//                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+//                                        .addComponent(cbxRoomCapacity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                        .addComponent(labelBed, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+//                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+//                                .addComponent(btnBook, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(18, 18, 18))
+//        );
+//
+//        labelTitle.setBackground(new Color(255, 255, 255));
+//        labelTitle.setFont(new Font("UTM Ericsson Capital", 0, 48)); // NOI18N
+//        labelTitle.setForeground(new Color(255, 255, 255));
+//        labelTitle.setText("demo hotel");
+//
+//        tabTable.setBackground(new Color(255, 255, 255));
+//        tabTable.setForeground(new Color(102, 102, 255));
+//        tabTable.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+//        tabTable.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+//
+//        tabRoom.setBackground(new Color(255, 255, 255));
+//
+//        labelAvailableRooms.setBackground(new Color(255, 255, 255));
+//        labelAvailableRooms.setFont(new Font("UTM Ericsson Capital", 0, 24)); // NOI18N
+//        labelAvailableRooms.setForeground(new Color(153, 153, 255));
+//        labelAvailableRooms.setText("available rooms");
+//
+//        jScrollPane2.setViewportView(tableAvailableRooms);
+//
+//        labelBookedRooms.setBackground(new Color(255, 255, 255));
+//        labelBookedRooms.setFont(new Font("UTM Ericsson Capital", 0, 24)); // NOI18N
+//        labelBookedRooms.setForeground(new Color(153, 153, 255));
+//        labelBookedRooms.setText("Booked rooms");
+//
+//        jScrollPane1.setViewportView(tableBookedRooms);
+//
+//        GroupLayout tabRoomLayout = new GroupLayout(tabRoom);
+//        tabRoom.setLayout(tabRoomLayout);
+//        tabRoomLayout.setHorizontalGroup(
+//                tabRoomLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(tabRoomLayout.createSequentialGroup()
+//                                .addGroup(tabRoomLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+//                                        .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 486, GroupLayout.PREFERRED_SIZE)
+//                                        .addGroup(tabRoomLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                                .addGroup(tabRoomLayout.createSequentialGroup()
+//                                                        .addGap(63, 63, 63)
+//                                                        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 486, GroupLayout.PREFERRED_SIZE))
+//                                                .addGroup(tabRoomLayout.createSequentialGroup()
+//                                                        .addGap(30, 30, 30)
+//                                                        .addGroup(tabRoomLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                                                .addComponent(labelBookedRooms, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
+//                                                                .addComponent(labelAvailableRooms, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)))))
+//                                .addContainerGap(37, Short.MAX_VALUE))
+//        );
+//        tabRoomLayout.setVerticalGroup(
+//                tabRoomLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(tabRoomLayout.createSequentialGroup()
+//                                .addGap(28, 28, 28)
+//                                .addComponent(labelAvailableRooms)
+//                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+//                                .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(18, 18, 18)
+//                                .addComponent(labelBookedRooms)
+//                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(32, 32, 32))
+//        );
+//
+//        tabTable.addTab("Room", tabRoom);
+//
+//        tabCar.setBackground(new Color(255, 255, 255));
+//
+//        labelAvailableCars.setBackground(new Color(255, 255, 255));
+//        labelAvailableCars.setFont(new Font("UTM Ericsson Capital", 0, 24)); // NOI18N
+//        labelAvailableCars.setForeground(new Color(153, 153, 255));
+//        labelAvailableCars.setText("available cars");
+//
+//        jScrollPane5.setViewportView(tableAvailableCars);
+//
+//        labelBookedCars.setBackground(new Color(255, 255, 255));
+//        labelBookedCars.setFont(new Font("UTM Ericsson Capital", 0, 24)); // NOI18N
+//        labelBookedCars.setForeground(new Color(153, 153, 255));
+//        labelBookedCars.setText("Booked cars");
+//
+//        jScrollPane6.setViewportView(tableBookedCars);
+//
+//        GroupLayout tabCarLayout = new GroupLayout(tabCar);
+//        tabCar.setLayout(tabCarLayout);
+//        tabCarLayout.setHorizontalGroup(
+//                tabCarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(tabCarLayout.createSequentialGroup()
+//                                .addGroup(tabCarLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+//                                        .addComponent(jScrollPane5, GroupLayout.PREFERRED_SIZE, 486, GroupLayout.PREFERRED_SIZE)
+//                                        .addGroup(tabCarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                                .addGroup(tabCarLayout.createSequentialGroup()
+//                                                        .addGap(63, 63, 63)
+//                                                        .addComponent(jScrollPane6, GroupLayout.PREFERRED_SIZE, 486, GroupLayout.PREFERRED_SIZE))
+//                                                .addGroup(tabCarLayout.createSequentialGroup()
+//                                                        .addGap(30, 30, 30)
+//                                                        .addGroup(tabCarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                                                .addComponent(labelBookedCars, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
+//                                                                .addComponent(labelAvailableCars, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)))))
+//                                .addContainerGap(37, Short.MAX_VALUE))
+//        );
+//        tabCarLayout.setVerticalGroup(
+//                tabCarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(tabCarLayout.createSequentialGroup()
+//                                .addGap(28, 28, 28)
+//                                .addComponent(labelAvailableCars)
+//                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+//                                .addComponent(jScrollPane5, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(18, 18, 18)
+//                                .addComponent(labelBookedCars)
+//                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                                .addComponent(jScrollPane6, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(32, 32, 32))
+//        );
+//
+//        tabTable.addTab("Car", tabCar);
+//
+//        cbxLanguage.setFont(new Font("UTM Ericsson Capital", 0, 12)); // NOI18N
+//        cbxLanguage.setForeground(new Color(102, 102, 255));
+//        cbxLanguage.setModel(new DefaultComboBoxModel<>(new String[]{"English", "Vietnamese"}));
+//
+//        GroupLayout bigBackGroundLayout = new GroupLayout(bigBackGround);
+//        bigBackGround.setLayout(bigBackGroundLayout);
+//        bigBackGroundLayout.setHorizontalGroup(
+//                bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(bigBackGroundLayout.createSequentialGroup()
+//                                .addContainerGap(53, Short.MAX_VALUE)
+//                                .addComponent(cusomerInfomationPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(29, 29, 29)
+//                                .addComponent(tabTable, GroupLayout.PREFERRED_SIZE, 607, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(29, 29, 29))
+//                        .addGroup(GroupLayout.Alignment.TRAILING, bigBackGroundLayout.createSequentialGroup()
+//                                .addContainerGap()
+//                                .addComponent(cbxLanguage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(207, 207, 207)
+//                                .addComponent(labelTitle, GroupLayout.PREFERRED_SIZE, 333, GroupLayout.PREFERRED_SIZE)
+//                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+//        );
+//        bigBackGroundLayout.setVerticalGroup(
+//                bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(bigBackGroundLayout.createSequentialGroup()
+//                                .addGroup(bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                        .addGroup(bigBackGroundLayout.createSequentialGroup()
+//                                                .addGap(19, 19, 19)
+//                                                .addComponent(labelTitle))
+//                                        .addGroup(bigBackGroundLayout.createSequentialGroup()
+//                                                .addContainerGap()
+//                                                .addComponent(cbxLanguage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+//                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+//                                .addGroup(bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+//                                        .addComponent(tabTable, GroupLayout.PREFERRED_SIZE, 510, GroupLayout.PREFERRED_SIZE)
+//                                        .addComponent(cusomerInfomationPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+//                                .addContainerGap(35, Short.MAX_VALUE))
+//        );
+//
+//        GroupLayout layout = new GroupLayout(getContentPane());
+//        getContentPane().setLayout(layout);
+//        layout.setHorizontalGroup(
+//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addComponent(bigBackGround, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//        );
+//        layout.setVerticalGroup(
+//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(layout.createSequentialGroup()
+//                                .addComponent(bigBackGround, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(0, 0, Short.MAX_VALUE))
+//        );
+//        drawRoomsTables();
+//        drawCarsTables();
+//        pack();
+//
+//        btnBook.setVisible(false);
+//
+//
+//    }// </editor-fold>
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
         bigBackGround = new JPanel();
-        cusomerInfomationPanel = new JPanel();
+        cusomerInfomationPanel = new  JPanel();
         tfPhone = new java.awt.TextField();
         tfName = new java.awt.TextField();
         tfEmail = new java.awt.TextField();
@@ -63,9 +439,8 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         labelEmail = new JLabel();
         labelBed = new JLabel();
         labelFromDay = new JLabel();
-        btnBook = new JButton();
         labelCustomer = new JLabel();
-        jComboBox1 = new JComboBox<>();
+        cbxRoomCapacity = new JComboBox<>();
         datePickerFromDay = new com.github.lgooddatepicker.components.DatePicker();
         labelToDay = new JLabel();
         datePickerToDay = new com.github.lgooddatepicker.components.DatePicker();
@@ -86,7 +461,6 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
         jScrollPane6 = new JScrollPane();
         tableBookedCars = new JTable();
         cbxLanguage = new JComboBox<>();
-
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBackground(new Color(255, 255, 255));
@@ -119,52 +493,40 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
             setTitleMultipleLang();
         });
 
-        labelName.setBackground(new Color(255, 255, 255));
-        labelName.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
-        labelName.setForeground(new Color(255, 255, 255));
         labelName.setText("name");
+        labelName.setBackground(new Color(255, 255, 255));
+        labelName.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelName.setForeground(new Color(255, 255, 255));
 
-        labelPhone.setBackground(new Color(255, 255, 255));
-        labelPhone.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
-        labelPhone.setForeground(new Color(255, 255, 255));
         labelPhone.setText("phone");
+        labelPhone.setBackground(new Color(255, 255, 255));
+        labelPhone.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelPhone.setForeground(new Color(255, 255, 255));
 
-        labelEmail.setBackground(new Color(255, 255, 255));
-        labelEmail.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
-        labelEmail.setForeground(new Color(255, 255, 255));
         labelEmail.setText("email");
+        labelEmail.setBackground(new Color(255, 255, 255));
+        labelEmail.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelEmail.setForeground(new Color(255, 255, 255));
 
-        labelBed.setBackground(new Color(255, 255, 255));
-        labelBed.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
-        labelBed.setForeground(new Color(255, 255, 255));
         labelBed.setText("BED");
+        labelBed.setBackground(new Color(255, 255, 255));
+        labelBed.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelBed.setForeground(new Color(255, 255, 255));
 
-        labelFromDay.setBackground(new Color(255, 255, 255));
-        labelFromDay.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
-        labelFromDay.setForeground(new Color(255, 255, 255));
         labelFromDay.setText("from");
+        labelFromDay.setBackground(new Color(255, 255, 255));
+        labelFromDay.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelFromDay.setForeground(new Color(255, 255, 255));
 
-        btnBook.setBackground(new Color(255, 255, 255));
-        btnBook.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
-        btnBook.setForeground(new Color(102, 102, 255));
-        btnBook.setText("book");
-        btnBook.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
-        btnBook.setBorderPainted(false);
-        btnBook.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBookActionPerformed(evt);
-            }
-        });
-
+        labelCustomer.setText("customer");
         labelCustomer.setBackground(new Color(255, 255, 255));
         labelCustomer.setFont(new Font("UTM Ericsson Capital", 0, 24)); // NOI18N
         labelCustomer.setForeground(new Color(153, 153, 255));
-        labelCustomer.setText("customer");
 
-        jComboBox1.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
-        jComboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"All", "1", "2"}));
-        jComboBox1.addActionListener(e -> {
-            String selected = Objects.requireNonNull(jComboBox1.getSelectedItem()).toString();
+        cbxRoomCapacity.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        cbxRoomCapacity.setModel(new DefaultComboBoxModel<>(new String[]{"All", "1", "2"}));
+        cbxRoomCapacity.addActionListener(e -> {
+            String selected = Objects.requireNonNull(cbxRoomCapacity.getSelectedItem()).toString();
             availableRooms = DBUtils.getRoomsBusyOrReady(false, ConstantsKey.ROOM_STATUS_READY);
             if(selected.equals("1")) {
                 Capacity capacity = new CapacityOne();
@@ -184,23 +546,15 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
             }
         });
 
-        labelToDay.setBackground(new Color(255, 255, 255));
-        labelToDay.setFont(new Font("UTM Ericsson Capital", 0, 14)); // NOI18N
-        labelToDay.setForeground(new Color(255, 255, 255));
         labelToDay.setText("to");
+        labelToDay.setBackground(new Color(255, 255, 255));
+        labelToDay.setFont(new Font("UTM Ericsson Capital", 0, 18)); // NOI18N
+        labelToDay.setForeground(new Color(255, 255, 255));
 
         GroupLayout cusomerInfomationPanelLayout = new GroupLayout(cusomerInfomationPanel);
         cusomerInfomationPanel.setLayout(cusomerInfomationPanelLayout);
         cusomerInfomationPanelLayout.setHorizontalGroup(
                 cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(cusomerInfomationPanelLayout.createSequentialGroup()
-                                .addGap(117, 117, 117)
-                                .addComponent(btnBook, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                        .addGroup(GroupLayout.Alignment.TRAILING, cusomerInfomationPanelLayout.createSequentialGroup()
-                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labelCustomer)
-                                .addGap(108, 108, 108))
                         .addGroup(cusomerInfomationPanelLayout.createSequentialGroup()
                                 .addGap(23, 23, 23)
                                 .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -208,27 +562,30 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
                                         .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                                                 .addComponent(labelToDay, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(labelFromDay, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(cusomerInfomationPanelLayout.createSequentialGroup()
-                                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(labelName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(labelEmail, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(labelBed, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE))
-                                                .addGap(23, 23, 23)
-                                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(tfPhone, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(tfName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(tfEmail, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(datePickerFromDay, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(datePickerToDay, GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                                        .addComponent(jComboBox1, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                .addGap(25, 25, 25))
+                                        .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(labelName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(labelEmail, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(labelBed, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                                .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(tfPhone, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(tfName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(tfEmail, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(datePickerFromDay, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(datePickerToDay, GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                        .addComponent(cbxRoomCapacity, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE))
+                                .addGap(33, 33, 33))
+                        .addGroup(cusomerInfomationPanelLayout.createSequentialGroup()
+                                .addGap(113, 113, 113)
+                                .addComponent(labelCustomer)
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         cusomerInfomationPanelLayout.setVerticalGroup(
                 cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(GroupLayout.Alignment.TRAILING, cusomerInfomationPanelLayout.createSequentialGroup()
-                                .addGap(17, 17, 17)
+                                .addGap(35, 35, 35)
                                 .addComponent(labelCustomer)
-                                .addGap(39, 39, 39)
+                                .addGap(32, 32, 32)
                                 .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(labelName, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(tfName, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
@@ -250,11 +607,9 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
                                         .addComponent(datePickerToDay, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                                 .addGroup(cusomerInfomationPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cbxRoomCapacity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(labelBed, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnBook, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18))
+                                .addGap(64, 64, 64))
         );
 
         labelTitle.setBackground(new Color(255, 255, 255));
@@ -369,16 +724,16 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
 
         cbxLanguage.setFont(new Font("UTM Ericsson Capital", 0, 12)); // NOI18N
         cbxLanguage.setForeground(new Color(102, 102, 255));
-        cbxLanguage.setModel(new DefaultComboBoxModel<>(new String[]{"English", "Vietnamese"}));
+        cbxLanguage.setModel(new DefaultComboBoxModel<>(new String[] { "Vietnamese", "English" }));
 
         GroupLayout bigBackGroundLayout = new GroupLayout(bigBackGround);
         bigBackGround.setLayout(bigBackGroundLayout);
         bigBackGroundLayout.setHorizontalGroup(
                 bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(bigBackGroundLayout.createSequentialGroup()
-                                .addContainerGap(53, Short.MAX_VALUE)
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(cusomerInfomationPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(tabTable, GroupLayout.PREFERRED_SIZE, 607, GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29))
                         .addGroup(GroupLayout.Alignment.TRAILING, bigBackGroundLayout.createSequentialGroup()
@@ -386,7 +741,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
                                 .addComponent(cbxLanguage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(207, 207, 207)
                                 .addComponent(labelTitle, GroupLayout.PREFERRED_SIZE, 333, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(374, Short.MAX_VALUE))
         );
         bigBackGroundLayout.setVerticalGroup(
                 bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -399,9 +754,11 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
                                                 .addContainerGap()
                                                 .addComponent(cbxLanguage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                .addGroup(bigBackGroundLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(tabTable, GroupLayout.PREFERRED_SIZE, 510, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cusomerInfomationPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(GroupLayout.Alignment.TRAILING, bigBackGroundLayout.createSequentialGroup()
+                                                .addComponent(cusomerInfomationPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addGap(9, 9, 9)))
                                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -417,12 +774,13 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
                                 .addComponent(bigBackGround, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
         );
+
         drawRoomsTables();
         drawCarsTables();
         pack();
-
-
     }// </editor-fold>
+
+
 
     private void roomDetailDialog(Room room) {
         JFrame frame = new JFrame();
@@ -841,7 +1199,7 @@ public class BookController extends JFrame implements ValidationMessage, ActionL
     private JPanel cusomerInfomationPanel;
     private com.github.lgooddatepicker.components.DatePicker datePickerFromDay;
     private com.github.lgooddatepicker.components.DatePicker datePickerToDay;
-    private JComboBox<String> jComboBox1;
+    private JComboBox<String> cbxRoomCapacity;
     private JScrollPane jScrollPane1;
     private JScrollPane jScrollPane2;
     private JScrollPane jScrollPane5;
